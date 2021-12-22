@@ -44,7 +44,7 @@ const Header = ({ loading }) => {
 
   const handleLogin = () => {
     auth.signInWithGoogle();
-  }
+  };
 
   const pages = [
     { route: "Início", href: "/" },
@@ -103,11 +103,15 @@ const Header = ({ loading }) => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map(({ route, href }) => (
-                <MenuItem key={route} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{route}</Typography>
-                </MenuItem>
-              ))}
+               {pages.map(({ route, href }) => (
+              <MenuItem key={route}>
+                <Link href={href} onClick={handleCloseNavMenu}>
+                  <a style={{ color: "black", textDecoration: "none" }}>
+                    {route}
+                  </a>
+                </Link>
+              </MenuItem>
+            ))}
             </Menu>
           </Box>
           <Typography
