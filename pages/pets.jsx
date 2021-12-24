@@ -24,11 +24,12 @@ export async function getStaticProps() {
 }
 
 const Pets = ({ data }) => {
-  console.log(data);
-
   return (
     <div>
       <Grid container component="section">
+        <Grid item xs={12}>
+          Olá
+        </Grid>
         {data &&
           data.map(({ dbId, data }) => {
             return (
