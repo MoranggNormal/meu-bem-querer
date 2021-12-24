@@ -80,8 +80,6 @@ export default function FirstPage() {
       }}
     >
       <CssBaseline />
-
-      
     </Grid>
   );
 }
