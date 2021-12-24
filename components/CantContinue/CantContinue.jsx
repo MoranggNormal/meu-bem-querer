@@ -6,7 +6,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "next/link";
-import Header from "../Header/Header";
 import { useRouter } from "next/router";
 
 function Copyright() {
@@ -40,7 +39,6 @@ export default function CantPass() {
   return (
     <>
       <CssBaseline />
-      <Header />
       <Box
         sx={{
           bgcolor: "background.paper",
