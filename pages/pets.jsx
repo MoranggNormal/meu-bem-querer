@@ -4,27 +4,6 @@ import Grid from "@mui/material/Grid";
 import firebase from "firebase";
 import { useAuth } from "../hooks/useAuth";
 
-const db = firebase.firestore();
-const petRef = db.collection("pets");
-
-let data = [];
-
-export async function getStaticProps() {
-  petRef
-    .where("pending", "==", false)
-    .orderBy("upVote", "desc")
-    .onSnapshot((querySnapshot) => {
-      data = [];
-      querySnapshot.forEach((doc) => {
-        data.push({ dbId: doc.id, data: doc.data() });
-      });
-    });
-
-  return {
-    props: { data },
-  };
-}
-
 const Pets = ({ data }) => {
   return (
     <div>
@@ -55,5 +34,25 @@ const Pets = ({ data }) => {
     </div>
   );
 };
+
+export async function getStaticProps() {
+  const db = firebase.firestore();
+  const petRef = db.collection("pets");
+  let data = [];
+
+  petRef
+    .where("pending", "==", false)
+    .orderBy("upVote", "desc")
+    .onSnapshot((querySnapshot) => {
+      data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ dbId: doc.id, data: doc.data() });
+      });
+    });
+
+  return {
+    props: { data },
+  };
+}
 
 export default Pets;
