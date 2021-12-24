@@ -5,6 +5,7 @@ import firebase from "firebase";
 import Header from "../components/Header/Header";
 import RecipeReviewCard from "../components/Card/Card";
 import Grid from "@mui/material/Grid";
+import FirstPage from "../components/FirstPage";
 
 export default function Home() {
   const auth = useAuth();
@@ -39,6 +40,10 @@ export default function Home() {
 
       <Header loading={loading} />
 
+      {/*
+      <FirstPage />
+     */}
+
       <Grid container component="section">
         {data &&
           data.map(({ dbId, data }) => {
@@ -52,12 +57,13 @@ export default function Home() {
                   petDescription={data.petDescription}
                   petImg={data.petImg}
                   petSituation={data.petSituation}
+                  petRace={data.petRace}
                   petCity={data.petCity}
                   petState={data.petState}
-                  loading={data.loading}
                   upVote={data.upVote}
                   upVotes={data.upVotes}
                   dbId={dbId}
+                  loading={loading}
                 />
               </Grid>
             );

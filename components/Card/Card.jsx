@@ -18,6 +18,13 @@ import Skeleton from "@mui/material/Skeleton";
 import firebase from "firebase";
 import { CardActionArea } from "@mui/material";
 import { useAuth } from "../../hooks/useAuth";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import AlertDialog from "../PetInfo/PetInfo";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -38,10 +45,11 @@ export default function RecipeReviewCard({
   authorPhoto,
   petImg,
   petSituation,
+  petRace,
   petCity,
   petState,
-  loading,
   upVote,
+  loading,
   upVotes,
   dbId,
 }) {
@@ -57,6 +65,8 @@ export default function RecipeReviewCard({
   };
 
   const handleUpVote = (upVote, dbId, upVotes) => {
+    if (!auth.user) return;
+
     if (upVotes.includes(auth.user.uid)) {
       petRef.doc(dbId).update({
         upVote: (upVote -= 1),
@@ -74,6 +84,7 @@ export default function RecipeReviewCard({
     <Card
       sx={{
         margin: "1em",
+        backgroundColor: "#F5F5F5",
       }}
     >
       <CardHeader
@@ -95,8 +106,8 @@ export default function RecipeReviewCard({
         }
         action={
           <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
+            <ShareIcon />
+          </IconButton>
         }
         title={
           loading ? (
@@ -134,6 +145,7 @@ export default function RecipeReviewCard({
           />
         )}
       </CardActionArea>
+
       <CardContent>
         {loading ? (
           <React.Fragment>
@@ -145,41 +157,29 @@ export default function RecipeReviewCard({
             <Skeleton animation="wave" height={10} width="80%" />
           </React.Fragment>
         ) : (
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" noWrap={true}>
             {petSituation}, em {petCity}, {petState}
           </Typography>
         )}
       </CardContent>
-      <CardActions disableSpacing>
+      <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
         <IconButton
-          aria-label="add to favorites"
+          aria-label="Apoie esta causa"
+          sx={{ color: "secondary.light", borderRadius: "0.2em" }}
           onClick={() => handleUpVote(upVote, dbId, upVotes)}
         >
           <FavoriteIcon sx={{ marginRight: "0.3em" }} /> {upVote}
         </IconButton>
 
-       
-
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
+        <AlertDialog
+          petName={petName}
+          petImg={petImg}
+          petRace={petRace}
+          petSituation={petSituation}
+          added={added}
+          petDescription={petDescription}
+        />
       </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography component="small" variant="h5">
-            Sobre {petName}:
-          </Typography>
-          <hr />
-          <Typography paragraph sx={{ mt: "2em" }}>
-            - {petDescription}
-          </Typography>
-        </CardContent>
-      </Collapse>
     </Card>
   );
 }
