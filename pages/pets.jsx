@@ -6,6 +6,7 @@ import { useAuth } from "../hooks/useAuth";
 
 const db = firebase.firestore();
 const petRef = db.collection("pets");
+
 let data = [];
 
 export async function getStaticProps() {
@@ -13,6 +14,7 @@ export async function getStaticProps() {
     .where("pending", "==", false)
     .orderBy("upVote", "desc")
     .onSnapshot((querySnapshot) => {
+      data = [];
       querySnapshot.forEach((doc) => {
         data.push({ dbId: doc.id, data: doc.data() });
       });
@@ -27,9 +29,6 @@ const Pets = ({ data }) => {
   return (
     <div>
       <Grid container component="section">
-        <Grid item xs={12}>
-          Olá
-        </Grid>
         {data &&
           data.map(({ dbId, data }) => {
             return (
