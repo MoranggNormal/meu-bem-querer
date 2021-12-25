@@ -28,7 +28,7 @@ const Pets = ({ data }) => {
           list.push({ dbId: doc.id, data: doc.data() });
         });
         setPetData(list);
-        setTimeout(() => setLoading(false), 2000);
+        setLoading(false);
       });
   }, []);
 
