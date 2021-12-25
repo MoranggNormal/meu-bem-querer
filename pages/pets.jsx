@@ -65,7 +65,7 @@ const Pets = ({ data }) => {
 
 let data = [];
 
-export function getServerSideProps(context) {
+export function getStaticProps() {
   try {
     petRef
       .where("pending", "==", false)
