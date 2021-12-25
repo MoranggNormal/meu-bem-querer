@@ -52,6 +52,7 @@ const Pets = ({ data }) => {
                   petState={data.petState}
                   upVote={data.upVote}
                   upVotes={data.upVotes}
+                  petUid={data.petUid}
                   dbId={dbId}
                   loading={loading}
                 />

@@ -52,6 +52,7 @@ export default function RecipeReviewCard({
   loading,
   upVotes,
   dbId,
+  petUid,
 }) {
   const [expanded, setExpanded] = React.useState(false);
 
@@ -178,6 +179,7 @@ export default function RecipeReviewCard({
           petSituation={petSituation}
           added={added}
           petDescription={petDescription}
+          petUid={petUid}
         />
       </CardActions>
     </Card>
