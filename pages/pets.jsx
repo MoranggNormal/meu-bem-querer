@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import RecipeReviewCard from "../components/Card/Card";
 import Grid from "@mui/material/Grid";
-import firebase from "firebase";
+import firebase from "../services/firebase";
 import {useAuth} from "../hooks/useAuth";
 
 const db = firebase.firestore();
