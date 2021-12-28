@@ -65,7 +65,7 @@ const Header = ({ loading }) => {
   ];
 
   return (
-    <AppBar position="sticky" sx={{ py: 2 }}  elevation={2}>
+    <AppBar position="sticky" sx={{ py: 2 }} elevation={2}>
       <Container maxWidth="xl">
         <Toolbar
           disableGutters
@@ -164,7 +164,20 @@ const Header = ({ loading }) => {
                 textAlign="center"
                 sx={{ fontWeight: "bold", fontSize: "1.2rem" }}
               >
-                {auth.user ? <LogoutIcon /> : <LoginIcon />}
+                <Tooltip
+                  title={auth.user ? "Sair da conta" : "Entrar em minha conta"}
+                >
+                  <IconButton>
+                    {auth.user ? (
+                      <LogoutIcon
+                        sx={{ color: "#fff" }}
+                        onClick={handleLogout}
+                      />
+                    ) : (
+                      <LoginIcon sx={{ color: "#fff" }} onClick={handleLogin} />
+                    )}
+                  </IconButton>
+                </Tooltip>
               </Typography>
             )}
 
@@ -179,12 +192,13 @@ const Header = ({ loading }) => {
                   />
                 ) : (
                   <Avatar
-                    alt="Remy Sharp"
+                    alt={auth.user ? auth.user.displayName : "convidado"}
                     src={auth.user ? auth.user.photoURL : ""}
                   />
                 )}
               </IconButton>
             </Tooltip>
+
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
