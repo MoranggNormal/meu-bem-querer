@@ -65,7 +65,7 @@ const Header = ({ loading }) => {
   ];
 
   return (
-    <AppBar position="sticky" sx={{ py: 2, boxShadow: "none" }}>
+    <AppBar position="sticky" sx={{ py: 2 }}  elevation={2}>
       <Container maxWidth="xl">
         <Toolbar
           disableGutters
