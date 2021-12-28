@@ -76,8 +76,8 @@ export default function RecipeReviewCard({
     <Card
       sx={{
         margin: "1em",
-        backgroundColor: "#F5F5F5",
       }}
+      elevation={3}
     >
       <CardHeader
         avatar={
