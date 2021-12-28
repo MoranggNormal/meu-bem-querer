@@ -115,7 +115,7 @@ const Header = ({ loading }) => {
               {pages.map(({ route, href }) => (
                 <MenuItem key={route}>
                   <Link href={href} onClick={handleCloseNavMenu}>
-                    <a style={{ color: "black", textDecoration: "none" }}>
+                    <a style={{ color: "#fff ", textDecoration: "none" }}>
                       {route}
                     </a>
                   </Link>
@@ -138,7 +138,7 @@ const Header = ({ loading }) => {
                 <Link href={href} onClick={handleCloseNavMenu}>
                   <a
                     style={{
-                      color: "#424242",
+                      color: "#fff",
                       textDecoration: "none",
                       fontWeight: "bold",
                     }}
