@@ -1,15 +1,10 @@
 import React, { Component } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
+import Box from "@mui/material/Box";
 
 const divs = (link) => {
-  return (
-    <>
-      <div>
-        <img src={link} />
-      </div>
-    </>
-  );
+  return <></>;
 };
 
 const links = [
@@ -30,7 +25,21 @@ export default function DemoCarousel() {
       renderIndicator={false}
     >
       {links.map((item) => {
-        return <React.Fragment key={item}>{divs(item)}</React.Fragment>;
+        return (
+          <Box
+            key={item}
+            xs={12}
+            sm={12}
+            md={12}
+            sx={{
+              backgroundImage: `url(${item})`,
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              height: "100vh",
+            }}
+          ></Box>
+        );
       })}
     </Carousel>
   );
