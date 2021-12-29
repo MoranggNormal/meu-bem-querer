@@ -14,6 +14,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Link from "next/link";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
+import Button from "@mui/material/Button";
 
 import { useAuth } from "../../hooks/useAuth";
 
@@ -167,16 +168,15 @@ const Header = ({ loading }) => {
                 <Tooltip
                   title={auth.user ? "Sair da conta" : "Entrar em minha conta"}
                 >
-                  <IconButton>
-                    {auth.user ? (
-                      <LogoutIcon
-                        sx={{ color: "#fff" }}
-                        onClick={handleLogout}
-                      />
-                    ) : (
-                      <LoginIcon sx={{ color: "#fff" }} onClick={handleLogin} />
-                    )}
-                  </IconButton>
+                  {auth.user ? (
+                    <Button onClick={handleLogout}>
+                      <LogoutIcon sx={{ color: "#fff" }} />
+                    </Button>
+                  ) : (
+                    <Button onClick={handleLogin}>
+                      <LoginIcon sx={{ color: "#fff" }} />
+                    </Button>
+                  )}
                 </Tooltip>
               </Typography>
             )}

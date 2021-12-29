@@ -30,7 +30,7 @@ export default function DemoCarousel() {
       renderIndicator={false}
     >
       {links.map((item) => {
-        return divs(item);
+        return <React.Fragment key={item}>{divs(item)}</React.Fragment>;
       })}
     </Carousel>
   );
