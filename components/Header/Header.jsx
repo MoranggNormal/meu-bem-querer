@@ -70,18 +70,17 @@ const Header = ({ loading }) => {
     <AppBar position="sticky" elevation={2}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ display: "flex" }}>
-          <Typography
+          <Box
             noWrap
-            component="h1"
+            component="div"
             sx={{
               display: { xs: "none", md: "flex" },
               fontWeight: "bold",
-              fontSize: "1.2rem",
               flexGrow: 1,
             }}
           >
             <Logo width={80} height={80} />
-          </Typography>
+          </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
