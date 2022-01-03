@@ -14,7 +14,7 @@ const links = [
   "https://cdn.pixabay.com/photo/2016/04/15/08/04/strawberry-1330459_960_720.jpg",
 ];
 
-export default function DemoCarousel() {
+export default function IndexCarroussel() {
   return (
     <Carousel
       autoPlay={true}
