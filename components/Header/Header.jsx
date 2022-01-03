@@ -130,7 +130,9 @@ const Header = ({ loading }) => {
             </Menu>
           </Box>
 
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box
+            sx={{ display: { xs: "none", md: "flex" }, marginRight: "1.5em" }}
+          >
             {pages.map(({ route, href }) => (
               <MenuItem key={route}>
                 <Link href={href} onClick={handleCloseNavMenu}>
