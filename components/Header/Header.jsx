@@ -71,15 +71,18 @@ const Header = ({ loading }) => {
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ display: "flex" }}>
           <Box
-            noWrap
             component="div"
             sx={{
               display: { xs: "none", md: "flex" },
-              fontWeight: "bold",
               flexGrow: 1,
+              alignItems: "center",
             }}
           >
-            <Logo width={80} height={80} />
+            <Link href="/">
+              <a>
+                <Logo width={80} height={80} />
+              </a>
+            </Link>
           </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
