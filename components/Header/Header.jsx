@@ -49,7 +49,6 @@ const Header = ({ loading }) => {
   };
 
   const pages = [
-    { route: "Início", href: "/" },
     { route: "Doar", href: "/addPet" },
     { route: "Doações", href: "/pets" },
     { route: "Como contribuir", href: "/pets" },
