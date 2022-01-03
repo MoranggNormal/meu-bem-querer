@@ -170,7 +170,7 @@ const Header = ({ loading }) => {
               {auth.user ? auth.user.displayName : "Convidado"}
             </Typography>
 
-            <Tooltip title="Open settings">
+            <Tooltip title="Abrir menu">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 {loading ? (
                   <Skeleton
