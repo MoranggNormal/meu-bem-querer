@@ -15,6 +15,7 @@ import Link from "next/link";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Button from "@mui/material/Button";
+import Logo from "../Logo/Logo";
 
 import { useAuth } from "../../hooks/useAuth";
 
@@ -66,12 +67,9 @@ const Header = ({ loading }) => {
   ];
 
   return (
-    <AppBar position="sticky" sx={{ py: 2 }} elevation={2}>
+    <AppBar position="sticky" elevation={2}>
       <Container maxWidth="xl">
-        <Toolbar
-          disableGutters
-          sx={{ display: "flex", justifyContent: "space-between" }}
-        >
+        <Toolbar disableGutters sx={{ display: "flex" }}>
           <Typography
             noWrap
             component="h1"
@@ -79,9 +77,10 @@ const Header = ({ loading }) => {
               display: { xs: "none", md: "flex" },
               fontWeight: "bold",
               fontSize: "1.2rem",
+              flexGrow: 1,
             }}
           >
-            MEU BEM-QUERER
+            <Logo width={80} height={80} />
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -95,6 +94,7 @@ const Header = ({ loading }) => {
             >
               <MenuIcon />
             </IconButton>
+
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -116,7 +116,13 @@ const Header = ({ loading }) => {
               {pages.map(({ route, href }) => (
                 <MenuItem key={route}>
                   <Link href={href} onClick={handleCloseNavMenu}>
-                    <a style={{ color: "#fff ", textDecoration: "none" }}>
+                    <a
+                      style={{
+                        color: "#EC407A",
+                        textDecoration: "none",
+                        fontWeight: "bold",
+                      }}
+                    >
                       {route}
                     </a>
                   </Link>
@@ -124,14 +130,6 @@ const Header = ({ loading }) => {
               ))}
             </Menu>
           </Box>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
-          >
-            MEU BEM-QUERER
-          </Typography>
 
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             {pages.map(({ route, href }) => (
@@ -154,32 +152,20 @@ const Header = ({ loading }) => {
           <Box
             sx={{
               display: "flex",
-              alignItems: "flex-end",
+              alignItems: "center",
               gap: "1em",
             }}
           >
-            {loading ? (
-              <Skeleton animation="wave" height={13} width={80} />
-            ) : (
-              <Typography
-                textAlign="center"
-                sx={{ fontWeight: "bold", fontSize: "1.2rem" }}
-              >
-                <Tooltip
-                  title={auth.user ? "Sair da conta" : "Entrar em minha conta"}
-                >
-                  {auth.user ? (
-                    <Button onClick={handleLogout}>
-                      <LogoutIcon sx={{ color: "#fff" }} />
-                    </Button>
-                  ) : (
-                    <Button onClick={handleLogin}>
-                      <LoginIcon sx={{ color: "#fff" }} />
-                    </Button>
-                  )}
-                </Tooltip>
-              </Typography>
-            )}
+            <Typography
+              noWrap
+              component="h1"
+              sx={{
+                fontWeight: "bold",
+                fontSize: "1.2rem",
+              }}
+            >
+              {auth.user ? auth.user.displayName : "Convidado"}
+            </Typography>
 
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -215,13 +201,19 @@ const Header = ({ loading }) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map(({ name, action }) => (
-                <MenuItem key={name} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" onClick={action}>
-                    {name}
-                  </Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseNavMenu}>
+                {auth.user ? (
+                  <Button onClick={handleLogout}>
+                    <LogoutIcon sx={{ marginRight: "0.3em" }} />
+                    Sair da minha conta
+                  </Button>
+                ) : (
+                  <Button onClick={handleLogin}>
+                    <LoginIcon sx={{ marginRight: "0.3em" }} />
+                    Entrar em minha conta
+                  </Button>
+                )}
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

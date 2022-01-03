@@ -1,12 +1,13 @@
 import * as React from "react";
 import { createTheme } from "@mui/material/styles";
-import { pink, red, deepOrange } from "@mui/material/colors";
+import { pink, red, grey } from "@mui/material/colors";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: deepOrange[300],
+      main: pink[400],
       light: pink[300],
+      dark: grey[800],
       contrastText: "#fff",
     },
     secondary: {
