@@ -1,4 +1,11 @@
-import * as React from "react";
+import { useState } from "react";
+
+import { useAuth } from "../../hooks/useAuth";
+
+import Link from "next/link";
+
+import Logo from "../Logo/Logo";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -11,25 +18,29 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Skeleton from "@mui/material/Skeleton";
-import Link from "next/link";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Button from "@mui/material/Button";
-import Logo from "../Logo/Logo";
 
-import { useAuth } from "../../hooks/useAuth";
+const pages = [
+  { route: "Doar", href: "/addPet" },
+  { route: "Doações", href: "/pets" },
+  { route: "Como contribuir", href: "/pets" },
+  { route: "Quem somos", href: "/pets" },
+  { route: "Apoiar projeto", href: "/pets" },
+];
 
 const Header = ({ loading }) => {
   const auth = useAuth();
 
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
+  const handleOpenNavMenu = (e) => {
+    setAnchorElNav(e.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+  const handleOpenUserMenu = (e) => {
+    setAnchorElUser(e.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
@@ -47,23 +58,6 @@ const Header = ({ loading }) => {
   const handleLogin = () => {
     auth.signInWithGoogle();
   };
-
-  const pages = [
-    { route: "Doar", href: "/addPet" },
-    { route: "Doações", href: "/pets" },
-    { route: "Como contribuir", href: "/pets" },
-    { route: "Quem somos", href: "/pets" },
-    { route: "Apoiar projeto", href: "/pets" },
-  ];
-
-  const settings = [
-    auth.user
-      ? { name: "Logout", action: () => handleLogout() }
-      : {
-          name: "Entrar em minha conta",
-          action: () => handleLogin(),
-        },
-  ];
 
   return (
     <AppBar position="sticky" elevation={2}>
@@ -87,7 +81,7 @@ const Header = ({ loading }) => {
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
-              aria-label="account of current user"
+              aria-label="Menu"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
@@ -115,19 +109,17 @@ const Header = ({ loading }) => {
               }}
             >
               {pages.map(({ route, href }) => (
-                <MenuItem key={route}>
-                  <Link href={href} onClick={handleCloseNavMenu}>
-                    <a
-                      style={{
-                        color: "#EC407A",
-                        textDecoration: "none",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {route}
-                    </a>
-                  </Link>
-                </MenuItem>
+                <Link key={route} href={href} onClick={handleCloseNavMenu}>
+                  <a
+                    style={{
+                      color: "#EC407A",
+                      textDecoration: "none",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    <MenuItem>{route}</MenuItem>
+                  </a>
+                </Link>
               ))}
             </Menu>
           </Box>
@@ -136,19 +128,17 @@ const Header = ({ loading }) => {
             sx={{ display: { xs: "none", md: "flex" }, marginRight: "1.5em" }}
           >
             {pages.map(({ route, href }) => (
-              <MenuItem key={route}>
-                <Link href={href} onClick={handleCloseNavMenu}>
-                  <a
-                    style={{
-                      color: "#fff",
-                      textDecoration: "none",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {route}
-                  </a>
-                </Link>
-              </MenuItem>
+              <Link key={route} href={href} onClick={handleCloseNavMenu}>
+                <a
+                  style={{
+                    color: "#fff",
+                    textDecoration: "none",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <MenuItem>{route}</MenuItem>
+                </a>
+              </Link>
             ))}
           </Box>
 
