@@ -21,6 +21,7 @@ import Skeleton from "@mui/material/Skeleton";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Button from "@mui/material/Button";
+import Badge from "@mui/material/Badge";
 
 const pages = [
   { route: "Doar", href: "/addPet" },
@@ -170,10 +171,12 @@ const Header = ({ loading }) => {
                     height={40}
                   />
                 ) : (
-                  <Avatar
-                    alt={auth.user ? auth.user.displayName : "convidado"}
-                    src={auth.user ? auth.user.photoURL : ""}
-                  />
+                  <Badge badgeContent={1} color="error">
+                    <Avatar
+                      alt={auth.user ? auth.user.displayName : "convidado"}
+                      src={auth.user ? auth.user.photoURL : ""}
+                    />
+                  </Badge>
                 )}
               </IconButton>
             </Tooltip>
