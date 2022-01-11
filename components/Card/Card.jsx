@@ -1,4 +1,14 @@
-import * as React from "react";
+/*
+- Hooks
+*/
+import { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
+
+import firebase from "../../services/firebase";
+
+/*
+- Components
+*/
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -8,25 +18,11 @@ import CardActions from "@mui/material/CardActions";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import Skeleton from "@mui/material/Skeleton";
-import firebase from "../../services/firebase";
 import { CardActionArea } from "@mui/material";
-import { useAuth } from "../../hooks/useAuth";
 import AlertDialog from "../PetInfo/PetInfo";
-
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
 
 export default function RecipeReviewCard({
   petName,
@@ -45,16 +41,12 @@ export default function RecipeReviewCard({
   dbId,
   petUid,
 }) {
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const auth = useAuth();
 
   const db = firebase.firestore();
   const petRef = db.collection("pets");
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
 
   const handleUpVote = (upVote, dbId, upVotes) => {
     if (!auth.user) return;
@@ -89,11 +81,7 @@ export default function RecipeReviewCard({
               height={40}
             />
           ) : (
-            <Avatar
-              sx={{ bgcolor: red[500] }}
-              aria-label="recipe"
-              src={authorPhoto}
-            ></Avatar>
+            <Avatar aria-label="recipe" src={authorPhoto}></Avatar>
           )
         }
         action={
@@ -140,14 +128,14 @@ export default function RecipeReviewCard({
 
       <CardContent>
         {loading ? (
-          <React.Fragment>
+          <>
             <Skeleton
               animation="wave"
               height={10}
               style={{ marginBottom: 6 }}
             />
             <Skeleton animation="wave" height={10} width="80%" />
-          </React.Fragment>
+          </>
         ) : (
           <Typography variant="body2" color="text.secondary" noWrap={true}>
             {petSituation}, em {petCity}, {petState}
