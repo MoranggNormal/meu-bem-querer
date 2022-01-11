@@ -1,5 +1,5 @@
 import Head from "next/head";
-import IndexCarroussel from "../components/Carroussel";
+import IndexCarroussel from "../components/IndexCarroussel/IndexCarroussel";
 
 export default function Home() {
   return (

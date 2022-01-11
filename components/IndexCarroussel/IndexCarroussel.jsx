@@ -1,11 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
 import Box from "@mui/material/Box";
-
-const divs = (link) => {
-  return <></>;
-};
 
 const links = [
   "https://cdn.pixabay.com/photo/2018/08/12/16/59/parrot-3601194_960_720.jpg",
@@ -29,8 +25,6 @@ export default function IndexCarroussel() {
           <Box
             key={item}
             xs={12}
-            sm={12}
-            md={12}
             sx={{
               backgroundImage: `url(${item})`,
               backgroundRepeat: "no-repeat",

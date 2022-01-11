@@ -1,31 +1,51 @@
+/*
+- Hooks
+*/
 import { useState } from "react";
+import { useRouter } from "next/router";
+import { useAuth } from "../../hooks/useAuth";
+import Link from "next/link";
+
+import firebase from "../../services/firebase";
+
+/*
+- Libs
+*/
+import { uid } from "uid/secure";
+
+/*
+- Components
+*/
+import SucessMessage from "../../components/Success/Success";
+import { styled } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "next/link";
-import { uid } from "uid/secure";
-import firebase from "../services/firebase";
-import { useAuth } from "../hooks/useAuth";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import PetsIcon from "@mui/icons-material/Pets";
 import Typography from "@mui/material/Typography";
-import SucessMessage from "../components/Success/Success";
-import { styled } from "@mui/material/styles";
-import LinearProgress, {
-  linearProgressClasses,
-} from "@mui/material/LinearProgress";
-import { useRouter } from "next/router";
-
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import animal from "../assets/images/abandoned_animal_bill_hinchey.png";
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import SendIcon from "@mui/icons-material/Send";
+import IconButton from "@mui/material/IconButton";
+import LinearProgress, {
+  linearProgressClasses,
+} from "@mui/material/LinearProgress";
 
-import brazilData from "../utils/brazilData.json";
+/*
+- Images
+*/
+import animal from "../../assets/images/abandoned_animal_bill_hinchey.png";
+
+/*
+- Brazil Data (States and Cities)
+*/
+import brazilData from "../../utils/brazilData.json";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 35,
@@ -39,23 +59,9 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   },
 }));
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Meu bem-querer
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+const Input = styled("input")({
+  display: "none",
+});
 
 export default function AnnouncePet() {
   const auth = useAuth();
@@ -72,11 +78,11 @@ export default function AnnouncePet() {
   const [cityArray, setCityArray] = useState([]);
   const [state, setState] = useState("");
 
-  const citties = brazilData.estados;
+  const cities = brazilData.estados;
 
   const handleState = (event) => {
     if (event.target.value != "") {
-      setCityArray(citties[event.target.value].cidades);
+      setCityArray(cities[event.target.value].cidades);
     }
     if (event.target.value == "") {
       setCityArray([]);
@@ -100,6 +106,7 @@ export default function AnnouncePet() {
 
     if (imageAsFile === "") {
       console.error(`not an image, the image file is a ${typeof imageAsFile}`);
+      return;
     }
 
     const uploadTask = storage
@@ -132,7 +139,7 @@ export default function AnnouncePet() {
               petRace: data.get("race"),
               petSituation: data.get("situation"),
               petCity: data.get("city"),
-              petState: citties[data.get("state")].nome,
+              petState: cities[data.get("state")].nome,
               petDescription: data.get("description"),
               petUid: uid(32),
               added: new Date().toLocaleDateString(),
@@ -155,7 +162,6 @@ export default function AnnouncePet() {
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
-      <CssBaseline />
       <Grid
         item
         xs={false}
@@ -307,11 +313,20 @@ export default function AnnouncePet() {
                   variant="outlined"
                   component="label"
                   sx={{ mt: 2, mb: 2 }}
+                  startIcon={<PhotoCamera />}
                 >
-                  Selecione uma imagem
-                  <input type="file" hidden onChange={handleImageAsFile} />
+                  Enviar uma foto
+                  <label htmlFor="icon-button-file">
+                    <Input
+                      accept="image/*"
+                      id="icon-button-file"
+                      type="file"
+                      onChange={handleImageAsFile}
+                    />
+                  </label>
                 </Button>
               </Grid>
+
               <Grid item xs={12} sm={12} lg={6}>
                 {progress > 1 ? (
                   <Box sx={{ marginTop: "1em" }}>
@@ -326,8 +341,9 @@ export default function AnnouncePet() {
                     fullWidth
                     variant="contained"
                     sx={{ mt: 2, mb: 2 }}
+                    startIcon={<SendIcon />}
                   >
-                    Buscar um dono agora
+                    Buscar um dono
                   </Button>
                 )}
               </Grid>
@@ -342,7 +358,6 @@ export default function AnnouncePet() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Grid>
       <SucessMessage open={open} />
     </Grid>
