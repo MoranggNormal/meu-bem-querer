@@ -32,7 +32,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import SendIcon from "@mui/icons-material/Send";
-import IconButton from "@mui/material/IconButton";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
