@@ -26,11 +26,10 @@ import MobileMenu from "../MobileMenu/MobileMenu";
 - Routes
 */
 const pages = [
-  { route: "Doar", href: "/addPet" },
-  { route: "Doações", href: "/pets" },
-  { route: "Como contribuir", href: "/pets" },
-  { route: "Quem somos", href: "/pets" },
-  { route: "Apoiar projeto", href: "/pets" },
+  { route: "Início", href: "/" },
+  { route: "Fazer uma doação", href: "/addPet" },
+  { route: "Adotar um pet", href: "/pets" },
+  { route: "Como doar", href: "/pets" },
 ];
 
 const Header = (props) => {

@@ -21,6 +21,4 @@ const secondRoutes = [
 ]
 
 
-
-
 export {firstRoutes, secondRoutes}
