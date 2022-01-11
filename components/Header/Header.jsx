@@ -1,7 +1,6 @@
 /*
 - Hooks
 */
-import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import Link from "next/link";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
@@ -13,20 +12,15 @@ import Logo from "../Logo/Logo";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import Skeleton from "@mui/material/Skeleton";
-import LoginIcon from "@mui/icons-material/Login";
-import LogoutIcon from "@mui/icons-material/Logout";
-import Button from "@mui/material/Button";
 import Badge from "@mui/material/Badge";
 import Slide from "@mui/material/Slide";
+import MobileMenu from "../MobileMenu/MobileMenu";
 
 /*
 - Routes
@@ -39,34 +33,8 @@ const pages = [
   { route: "Apoiar projeto", href: "/pets" },
 ];
 
-const Header = ({ loading }, props) => {
+const Header = (props) => {
   const auth = useAuth();
-
-  const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
-
-  const handleOpenNavMenu = (e) => {
-    setAnchorElNav(e.currentTarget);
-  };
-  const handleOpenUserMenu = (e) => {
-    setAnchorElUser(e.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  const handleLogout = () => {
-    auth.signout();
-  };
-
-  const handleLogin = () => {
-    auth.signInWithGoogle();
-  };
 
   const HideOnScroll = (props) => {
     const { children, window } = props;
@@ -103,49 +71,9 @@ const Header = ({ loading }, props) => {
               </Box>
 
               <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-                <IconButton
-                  size="large"
-                  aria-label="Menu"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleOpenNavMenu}
-                  color="inherit"
-                >
+                <MobileMenu>
                   <MenuIcon />
-                </IconButton>
-
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorElNav}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "left",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "left",
-                  }}
-                  open={Boolean(anchorElNav)}
-                  onClose={handleCloseNavMenu}
-                  sx={{
-                    display: { xs: "block", md: "none" },
-                  }}
-                >
-                  {pages.map(({ route, href }) => (
-                    <Link key={route} href={href} onClick={handleCloseNavMenu}>
-                      <a
-                        style={{
-                          color: "#EC407A",
-                          textDecoration: "none",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        <MenuItem>{route}</MenuItem>
-                      </a>
-                    </Link>
-                  ))}
-                </Menu>
+                </MobileMenu>
               </Box>
 
               <Box
@@ -155,7 +83,7 @@ const Header = ({ loading }, props) => {
                 }}
               >
                 {pages.map(({ route, href }) => (
-                  <Link key={route} href={href} onClick={handleCloseNavMenu}>
+                  <Link key={route} href={href}>
                     <a
                       style={{
                         color: "#fff",
@@ -188,55 +116,13 @@ const Header = ({ loading }, props) => {
                 </Typography>
 
                 <Tooltip title="Abrir menu">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    {loading ? (
-                      <Skeleton
-                        animation="wave"
-                        variant="circular"
-                        width={40}
-                        height={40}
-                      />
-                    ) : (
-                      <Badge badgeContent={1} color="error">
-                        <Avatar
-                          alt={auth.user ? auth.user.displayName : "convidado"}
-                          src={auth.user ? auth.user.photoURL : ""}
-                        />
-                      </Badge>
-                    )}
-                  </IconButton>
+                  <Badge badgeContent={21} color="error">
+                    <Avatar
+                      alt={auth.user ? auth.user.displayName : "convidado"}
+                      src={auth.user ? auth.user.photoURL : ""}
+                    />
+                  </Badge>
                 </Tooltip>
-
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  <MenuItem onClick={handleCloseNavMenu}>
-                    {auth.user ? (
-                      <Button onClick={handleLogout}>
-                        <LogoutIcon sx={{ marginRight: "0.3em" }} />
-                        Sair da minha conta
-                      </Button>
-                    ) : (
-                      <Button onClick={handleLogin}>
-                        <LoginIcon sx={{ marginRight: "0.3em" }} />
-                        Entrar em minha conta
-                      </Button>
-                    )}
-                  </MenuItem>
-                </Menu>
               </Box>
             </Toolbar>
           </Container>
