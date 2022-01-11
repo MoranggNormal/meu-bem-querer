@@ -237,10 +237,6 @@ export default function AnnouncePet() {
                     onChange={handleState}
                     label="Estado"
                   >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-
                     {brazilData.estados.map((data, index) => {
                       return (
                         <MenuItem key={data.sigla} value={index}>
@@ -265,10 +261,6 @@ export default function AnnouncePet() {
                     onChange={handleCity}
                     disabled={!state}
                   >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-
                     {cityArray.map((data, index) => {
                       return (
                         <MenuItem key={data} value={data}>
