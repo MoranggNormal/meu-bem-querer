@@ -306,7 +306,7 @@ export default function AnnouncePet() {
                   sx={{ mt: 2, mb: 2 }}
                   startIcon={<PhotoCamera />}
                 >
-                  Enviar uma foto
+                  Escolha uma foto
                   <label htmlFor="icon-button-file">
                     <Input
                       accept="image/*"
@@ -334,7 +334,7 @@ export default function AnnouncePet() {
                     sx={{ mt: 2, mb: 2 }}
                     startIcon={<SendIcon />}
                   >
-                    Buscar um dono
+                    Enviar dados
                   </Button>
                 )}
               </Grid>
@@ -343,7 +343,9 @@ export default function AnnouncePet() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/" variant="body2">
-                  Desejo voltar a página principal
+                  <Typography component="a" color="primary.main">
+                    Desejo voltar a página principal
+                  </Typography>
                 </Link>
               </Grid>
             </Grid>
