@@ -78,17 +78,17 @@ export default function BasicModal({
         aria-describedby="modal-modal-description"
       >
         <Grid container component={Paper} sx={style}>
-          <Grid
-            item
-            xs={4}
-            component="article"
-            sx={{
-              backgroundImage: `url(${petImg})`,
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          ></Grid>
+          <Grid item xs={4} component="article">
+            <img
+              src={petImg}
+              alt={petName}
+              width="100%"
+              height="100%"
+              style={{
+                objectFit: "cover",
+              }}
+            />
+          </Grid>
 
           <Grid item xs={8} component="article" sx={{ p: 2 }}>
             <div
