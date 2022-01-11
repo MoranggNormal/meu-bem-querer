@@ -7,7 +7,7 @@ const theme = createTheme({
     primary: {
       main: pink[400],
       light: pink[300],
-      dark: grey[800],
+      dark: pink[800],
       contrastText: "#fff",
     },
     secondary: {
