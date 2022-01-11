@@ -1,5 +1,13 @@
+/*
+- Hooks
+*/
 import { useState } from "react";
+
+/*
+- Components
+*/
 import Box from "@mui/material/Box";
+import Link from "next/link";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
@@ -8,8 +16,11 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
+
+/*
+- Routes Data
+*/
 import { firstRoutes, secondRoutes } from "./Routes";
-import Link from "next/link";
 
 export default function MobileMenu() {
   const [state, setState] = useState({

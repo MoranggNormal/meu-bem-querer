@@ -1,8 +1,13 @@
-import React from "react";
+/*
+- Components
+*/
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
 import Box from "@mui/material/Box";
 
+/*
+- Image Links
+*/
 const links = [
   "https://cdn.pixabay.com/photo/2018/08/12/16/59/parrot-3601194_960_720.jpg",
   "https://cdn.pixabay.com/photo/2016/03/27/22/22/fox-1284512_960_720.jpg",
