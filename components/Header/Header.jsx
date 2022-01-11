@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import Link from "next/link";
+import useScrollTrigger from "@mui/material/useScrollTrigger";
 
 /*
 - Components
@@ -25,7 +26,6 @@ import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Button from "@mui/material/Button";
 import Badge from "@mui/material/Badge";
-import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Slide from "@mui/material/Slide";
 
 /*
