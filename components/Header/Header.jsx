@@ -1,11 +1,14 @@
+/*
+- Hooks
+*/
 import { useState } from "react";
-
 import { useAuth } from "../../hooks/useAuth";
-
 import Link from "next/link";
 
+/*
+- Components
+*/
 import Logo from "../Logo/Logo";
-
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -22,7 +25,12 @@ import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Button from "@mui/material/Button";
 import Badge from "@mui/material/Badge";
+import useScrollTrigger from "@mui/material/useScrollTrigger";
+import Slide from "@mui/material/Slide";
 
+/*
+- Routes
+*/
 const pages = [
   { route: "Doar", href: "/addPet" },
   { route: "Doações", href: "/pets" },
@@ -31,7 +39,7 @@ const pages = [
   { route: "Apoiar projeto", href: "/pets" },
 ];
 
-const Header = ({ loading }) => {
+const Header = ({ loading }, props) => {
   const auth = useAuth();
 
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -60,161 +68,181 @@ const Header = ({ loading }) => {
     auth.signInWithGoogle();
   };
 
+  const HideOnScroll = (props) => {
+    const { children, window } = props;
+    const trigger = useScrollTrigger({
+      target: window ? window() : undefined,
+    });
+
+    return (
+      <Slide appear={false} direction="down" in={!trigger}>
+        {children}
+      </Slide>
+    );
+  };
+
   return (
-    <AppBar position="sticky" elevation={2}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ display: "flex" }}>
-          <Box
-            component="div"
-            sx={{
-              display: { xs: "none", md: "flex" },
-              flexGrow: 1,
-              alignItems: "center",
-            }}
-          >
-            <Link href="/">
-              <a>
-                <Logo width={80} height={80} />
-              </a>
-            </Link>
-          </Box>
-
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="Menu"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {pages.map(({ route, href }) => (
-                <Link key={route} href={href} onClick={handleCloseNavMenu}>
-                  <a
-                    style={{
-                      color: "#EC407A",
-                      textDecoration: "none",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    <MenuItem>{route}</MenuItem>
+    <>
+      <HideOnScroll {...props}>
+        <AppBar position="sticky" elevation={2}>
+          <Container maxWidth="xl">
+            <Toolbar sx={{ display: "flex" }}>
+              <Box
+                component="div"
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  flexGrow: 1,
+                  alignItems: "center",
+                }}
+              >
+                <Link href="/">
+                  <a>
+                    <Logo width={80} height={80} />
                   </a>
                 </Link>
-              ))}
-            </Menu>
-          </Box>
+              </Box>
 
-          <Box
-            sx={{ display: { xs: "none", md: "flex" }, marginRight: "1.5em" }}
-          >
-            {pages.map(({ route, href }) => (
-              <Link key={route} href={href} onClick={handleCloseNavMenu}>
-                <a
-                  style={{
-                    color: "#fff",
-                    textDecoration: "none",
-                    fontWeight: "bold",
+              <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+                <IconButton
+                  size="large"
+                  aria-label="Menu"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleOpenNavMenu}
+                  color="inherit"
+                >
+                  <MenuIcon />
+                </IconButton>
+
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorElNav}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                  open={Boolean(anchorElNav)}
+                  onClose={handleCloseNavMenu}
+                  sx={{
+                    display: { xs: "block", md: "none" },
                   }}
                 >
-                  <MenuItem>{route}</MenuItem>
-                </a>
-              </Link>
-            ))}
-          </Box>
+                  {pages.map(({ route, href }) => (
+                    <Link key={route} href={href} onClick={handleCloseNavMenu}>
+                      <a
+                        style={{
+                          color: "#EC407A",
+                          textDecoration: "none",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        <MenuItem>{route}</MenuItem>
+                      </a>
+                    </Link>
+                  ))}
+                </Menu>
+              </Box>
 
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: "1em",
-            }}
-          >
-            <Typography
-              noWrap
-              component="h1"
-              sx={{
-                fontWeight: "bold",
-                fontSize: "1.2rem",
-              }}
-            >
-              {auth.user ? auth.user.displayName : "Convidado"}
-            </Typography>
+              <Box
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  marginRight: "1.5em",
+                }}
+              >
+                {pages.map(({ route, href }) => (
+                  <Link key={route} href={href} onClick={handleCloseNavMenu}>
+                    <a
+                      style={{
+                        color: "#fff",
+                        textDecoration: "none",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      <MenuItem>{route}</MenuItem>
+                    </a>
+                  </Link>
+                ))}
+              </Box>
 
-            <Tooltip title="Abrir menu">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {loading ? (
-                  <Skeleton
-                    animation="wave"
-                    variant="circular"
-                    width={40}
-                    height={40}
-                  />
-                ) : (
-                  <Badge badgeContent={1} color="error">
-                    <Avatar
-                      alt={auth.user ? auth.user.displayName : "convidado"}
-                      src={auth.user ? auth.user.photoURL : ""}
-                    />
-                  </Badge>
-                )}
-              </IconButton>
-            </Tooltip>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1em",
+                }}
+              >
+                <Typography
+                  noWrap
+                  component="h1"
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "1.2rem",
+                  }}
+                >
+                  {auth.user ? auth.user.displayName : "Convidado"}
+                </Typography>
 
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem onClick={handleCloseNavMenu}>
-                {auth.user ? (
-                  <Button onClick={handleLogout}>
-                    <LogoutIcon sx={{ marginRight: "0.3em" }} />
-                    Sair da minha conta
-                  </Button>
-                ) : (
-                  <Button onClick={handleLogin}>
-                    <LoginIcon sx={{ marginRight: "0.3em" }} />
-                    Entrar em minha conta
-                  </Button>
-                )}
-              </MenuItem>
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+                <Tooltip title="Abrir menu">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    {loading ? (
+                      <Skeleton
+                        animation="wave"
+                        variant="circular"
+                        width={40}
+                        height={40}
+                      />
+                    ) : (
+                      <Badge badgeContent={1} color="error">
+                        <Avatar
+                          alt={auth.user ? auth.user.displayName : "convidado"}
+                          src={auth.user ? auth.user.photoURL : ""}
+                        />
+                      </Badge>
+                    )}
+                  </IconButton>
+                </Tooltip>
+
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    {auth.user ? (
+                      <Button onClick={handleLogout}>
+                        <LogoutIcon sx={{ marginRight: "0.3em" }} />
+                        Sair da minha conta
+                      </Button>
+                    ) : (
+                      <Button onClick={handleLogin}>
+                        <LoginIcon sx={{ marginRight: "0.3em" }} />
+                        Entrar em minha conta
+                      </Button>
+                    )}
+                  </MenuItem>
+                </Menu>
+              </Box>
+            </Toolbar>
+          </Container>
+        </AppBar>
+      </HideOnScroll>
+    </>
   );
 };
 export default Header;
