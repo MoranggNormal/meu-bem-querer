@@ -83,15 +83,7 @@ const Header = (props) => {
               >
                 {pages.map(({ route, href }) => (
                   <Link key={route} href={href}>
-                    <a
-                      style={{
-                        color: "#fff",
-                        textDecoration: "none",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      <MenuItem>{route}</MenuItem>
-                    </a>
+                    <MenuItem component="a">{route}</MenuItem>
                   </Link>
                 ))}
               </Box>
