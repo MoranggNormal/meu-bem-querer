@@ -21,6 +21,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Badge from "@mui/material/Badge";
 import Slide from "@mui/material/Slide";
 import MobileMenu from "../MobileMenu/MobileMenu";
+import AccountMenu from "../AccountMenu/AccountMenu";
 
 /*
 - Routes
@@ -106,14 +107,7 @@ const Header = (props) => {
                   {auth.user ? auth.user.displayName : "Convidado"}
                 </Typography>
 
-                <Tooltip title="Abrir menu">
-                  <Badge badgeContent={21} color="error">
-                    <Avatar
-                      alt={auth.user ? auth.user.displayName : "convidado"}
-                      src={auth.user ? auth.user.photoURL : ""}
-                    />
-                  </Badge>
-                </Tooltip>
+                <AccountMenu />
               </Box>
             </Toolbar>
           </Container>
