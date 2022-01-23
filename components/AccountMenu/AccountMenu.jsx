@@ -19,16 +19,13 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Avatar from "@mui/material/Avatar";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import LoginIcon from "@mui/icons-material/Login";
-import LogoutIcon from "@mui/icons-material/Logout";
 
 /*
 - Routes Data
 */
 import { firstRoutes, secondRoutes } from "./Routes";
 
-export default function MobileMenu({ name, picture }) {
+export default function MobileMenu() {
   const auth = useAuth();
 
   const [state, setState] = useState({
@@ -47,19 +44,11 @@ export default function MobileMenu({ name, picture }) {
     setState({ ...state, [anchor]: open });
   };
 
-  const handleAccount = () => {
-    if (auth.user) {
-      return auth.signout();
-    }
-
-    return auth.signInWithGoogle();
-  };
-
   return (
     <>
       <Avatar
-        alt={name ?? "Convidado"}
-        src={picture ?? ""}
+        alt={auth.user ? auth.user.displayName : "convidado"}
+        src={auth.user ? auth.user.photoURL : ""}
         onClick={toggleDrawer("left", true)}
         sx={[
           {
@@ -93,20 +82,6 @@ export default function MobileMenu({ name, picture }) {
                 </ListItem>
               </Link>
             ))}
-
-            <ListItem
-              component="button"
-              sx={{ color: "primary.main" }}
-              button
-              onClick={handleAccount}
-            >
-              <ListItemIcon sx={{ color: "primary.main" }}>
-                {auth.user ? <LogoutIcon /> : <LoginIcon />}
-              </ListItemIcon>
-              <ListItemText
-                primary={auth.user ? "Sair da conta" : "Entrar da conta"}
-              />
-            </ListItem>
           </List>
 
           <Divider />
