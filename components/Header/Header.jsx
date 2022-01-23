@@ -33,7 +33,7 @@ const pages = [
   { route: "Como doar", href: "/pets" },
 ];
 
-const Header = (props) => {
+const Header = ({ storedUser }, props) => {
   const auth = useAuth();
 
   const HideOnScroll = (props) => {
@@ -104,10 +104,13 @@ const Header = (props) => {
                     fontSize: "1.2rem",
                   }}
                 >
-                  {auth.user ? auth.user.displayName : "Convidado"}
+                  {storedUser ? storedUser.name : "Convidado"}
                 </Typography>
 
-                <AccountMenu />
+                <AccountMenu
+                  name={storedUser ? storedUser.name : "Convidado"}
+                  picture={storedUser ? storedUser.picture : ""}
+                />
               </Box>
             </Toolbar>
           </Container>
