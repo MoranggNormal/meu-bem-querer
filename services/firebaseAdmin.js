@@ -1,11 +1,18 @@
 import admin from "firebase-admin";
 
-const serviceAccount = JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_ADMIN);
-
 export const verifyToken = (token) => {
-  if (admin.apps.length === 0) {
+  if (!admin.apps.length) {
     admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
+      credential: admin.credential.cert({
+        projectId: process.env.NEXT_PUBLIC_FIREBASEADMIN_PROJECT_ID,
+        clientEmail: process.env.NEXT_PUBLIC_FIREBASEADMIN_CLIENT_EMAIL,
+        privateKey: process.env.NEXT_PUBLIC_FIREBASEADMIN_PRIVATE_KEY
+          ? process.env.NEXT_PUBLIC_FIREBASEADMIN_PRIVATE_KEY.replace(
+              /\\n/gm,
+              "\n"
+            )
+          : undefined,
+      }),
     });
   }
   return admin

@@ -89,7 +89,7 @@ export async function getServerSideProps(context) {
   } catch (error) {
     console.log(error);
     return {
-      props: { err: "error" },
+      props: { err: error },
     };
   }
 }
