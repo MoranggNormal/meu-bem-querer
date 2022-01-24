@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps, router }) {
             key={router.route}
             initial="initial"
             animate="animate"
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.2 }}
             variants={{
               initial: {
                 opacity: 0,
