@@ -64,8 +64,15 @@ const Header = (props) => {
                 }}
               >
                 <Link href="/">
-                  <Box component="a">
-                    <Logo width={80} height={80} />
+                  <Box
+                    component="a"
+                    sx={{
+                      cursor: "pointer",
+                      display: "grid",
+                      placeItems: "center",
+                    }}
+                  >
+                    <Logo width={48} height={32} />
                   </Box>
                 </Link>
               </Box>
