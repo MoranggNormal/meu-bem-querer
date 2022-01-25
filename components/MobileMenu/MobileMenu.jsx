@@ -23,69 +23,69 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { firstRoutes, secondRoutes } from "./Routes";
 
 export default function MobileMenu() {
-  const [state, setState] = useState({
-    left: false,
-  });
+ const [state, setState] = useState({
+  left: false,
+ });
 
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event &&
+ const toggleDrawer = (anchor, open) => (event) => {
+  if (
+   event &&
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
+  ) {
+   return;
+  }
 
-    setState({ ...state, [anchor]: open });
-  };
+  setState({ ...state, [anchor]: open });
+ };
 
-  return (
-    <>
-      <IconButton sx={{ color: "white" }} onClick={toggleDrawer("left", true)}>
-        <MenuIcon />
-      </IconButton>
+ return (
+  <>
+   <IconButton sx={{ color: "white" }} onClick={toggleDrawer("left", true)}>
+    <MenuIcon />
+   </IconButton>
 
-      <SwipeableDrawer
-        anchor={"left"}
-        open={state["left"]}
-        onClose={toggleDrawer("left", false)}
-        onOpen={toggleDrawer("left", true)}
-      >
-        <Box
-          sx={{ width: 250 }}
-          role="presentation"
-          onClick={toggleDrawer("left", false)}
-          onKeyDown={toggleDrawer("left", false)}
-        >
-          <List>
-            {firstRoutes.map(({ route, href, icon }) => (
-              <Link key={route} href={href}>
-                <ListItem component="a" sx={{ color: "primary.main" }} button>
-                  <ListItemIcon sx={{ color: "primary.main" }}>
-                    {icon}
-                  </ListItemIcon>
-                  <ListItemText primary={route} />
-                </ListItem>
-              </Link>
-            ))}
-          </List>
+   <SwipeableDrawer
+    anchor={"left"}
+    open={state["left"]}
+    onClose={toggleDrawer("left", false)}
+    onOpen={toggleDrawer("left", true)}
+   >
+    <Box
+     sx={{ width: 250 }}
+     role="presentation"
+     onClick={toggleDrawer("left", false)}
+     onKeyDown={toggleDrawer("left", false)}
+    >
+     <List>
+      {firstRoutes.map(({ route, href, icon }) => (
+       <Link key={route} href={href} passHref>
+        <ListItem component="a" sx={{ color: "primary.main" }} button>
+         <ListItemIcon sx={{ color: "primary.main" }}>
+          {icon}
+         </ListItemIcon>
+         <ListItemText primary={route} />
+        </ListItem>
+       </Link>
+      ))}
+     </List>
 
-          <Divider />
+     <Divider />
 
-          <List>
-            {secondRoutes.map(({ route, href, icon }) => (
-              <Link key={route} href={href}>
-                <ListItem component="a" sx={{ color: "primary.main" }} button>
-                  <ListItemIcon sx={{ color: "primary.main" }}>
-                    {icon}
-                  </ListItemIcon>
-                  <ListItemText primary={route} />
-                </ListItem>
-              </Link>
-            ))}
-          </List>
-        </Box>
-      </SwipeableDrawer>
-    </>
-  );
+     <List>
+      {secondRoutes.map(({ route, href, icon }) => (
+       <Link key={route} href={href} passHref>
+        <ListItem component="a" sx={{ color: "primary.main" }} button>
+         <ListItemIcon sx={{ color: "primary.main" }}>
+          {icon}
+         </ListItemIcon>
+         <ListItemText primary={route} />
+        </ListItem>
+       </Link>
+      ))}
+     </List>
+    </Box>
+   </SwipeableDrawer>
+  </>
+ );
 }

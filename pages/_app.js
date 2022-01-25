@@ -9,33 +9,33 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Header from "../components/Header/Header";
 
 function MyApp({ Component, pageProps, router }) {
-  return (
-    <ThemeProvider theme={theme}>
-      <ProvideAuth>
-        <CssBaseline />
-        <Header />
+ return (
+  <ThemeProvider theme={theme}>
+   <ProvideAuth>
+    <CssBaseline />
+    <Header />
 
-        <AnimatePresence>
-          <motion.div
-            key={router.route}
-            initial="initial"
-            animate="animate"
-            transition={{ delay: 0.2 }}
-            variants={{
-              initial: {
-                opacity: 0,
-              },
-              animate: {
-                opacity: 1,
-              },
-            }}
-          >
-            <Component {...pageProps} />
-          </motion.div>
-        </AnimatePresence>
-      </ProvideAuth>
-    </ThemeProvider>
-  );
+    <AnimatePresence>
+     <motion.div
+      key={router.route}
+      initial="initial"
+      animate="animate"
+      transition={{ delay: 0.2 }}
+      variants={{
+       initial: {
+        opacity: 0,
+       },
+       animate: {
+        opacity: 1,
+       },
+      }}
+     >
+      <Component {...pageProps} />
+     </motion.div>
+    </AnimatePresence>
+   </ProvideAuth>
+  </ThemeProvider>
+ );
 }
 
 export default MyApp;
