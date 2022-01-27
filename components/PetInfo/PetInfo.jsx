@@ -14,7 +14,6 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import InfoIcon from "@mui/icons-material/Info";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import Link from "next/link";
 
 /*
 - Styles
@@ -50,7 +49,6 @@ export default function BasicModal({
  petRace,
  petSituation,
  petDescription,
- petUid,
 }) {
  const [open, setOpen] = useState(false);
  const handleOpen = () => setOpen(true);
@@ -61,17 +59,7 @@ export default function BasicModal({
    <Button sx={{ gap: "0.4em" }} onClick={handleOpen}>
     <InfoIcon /> Detalhes
    </Button>
-   <Link
-    href={{
-     pathname: "pets/[pet]",
-     query: {
-      pet: petUid,
-      petName,
-     },
-    }}
-   >
-        Gogo
-   </Link>
+
    <Modal
     open={open}
     onClose={handleClose}
