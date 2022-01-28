@@ -1,57 +1,60 @@
-import React, { useEffect, useState } from "react";
 import RecipeReviewCard from "../components/Card/Card";
 import Grid from "@mui/material/Grid";
-import firebase from "../services/firebase";
-
+import { fireStore } from "../services/firebase";
+import useFirestoreQuery from "../hooks/useFireStoreQuery";
 
 const Pets = () => {
- const db = firebase.firestore();
- const petRef = db.collection("pets");
-
- const [petData, setPetData] = useState([]);
- const [loading, setLoading] = useState(true);
-
- useEffect(() => {
-  petRef
+ const { data, status } = useFirestoreQuery(
+  fireStore
+   .collection("pets")
    .where("pending", "==", false)
    .orderBy("upVote", "desc")
-   .onSnapshot((querySnapshot) => {
-    let list = [];
-    querySnapshot.forEach((doc) => {
-     list.push({ dbId: doc.id, data: doc.data() });
-    });
-    setPetData(list);
-    setLoading(false);
-   });
- }, []);
+ );
 
  return (
   <div>
    <Grid container component="section">
-    {petData &&
-          petData.map(({ dbId, data }) => {
-           return (
-            <Grid item key={data.petUid} xs={12} sm={6} md={4} lg={3}>
-             <RecipeReviewCard
-              petName={data.petName}
-              added={data.added}
-              authorName={data.authorName}
-              authorPhoto={data.authorPhoto}
-              petDescription={data.petDescription}
-              petImg={data.petImg}
-              petSituation={data.petSituation}
-              petRace={data.petRace}
-              petCity={data.petCity}
-              petState={data.petState}
-              upVote={data.upVote}
-              upVotes={data.upVotes}
-              petUid={data.petUid}
-              dbId={dbId}
-              loading={loading}
-             />
-            </Grid>
-           );
-          })}
+    {data &&
+          data.map(
+           ({
+            dbId,
+            petUid,
+            petName,
+            added,
+            authorName,
+            authorPhoto,
+            petDescription,
+            petImg,
+            petSituation,
+            petRace,
+            petCity,
+            petState,
+            upVote,
+            upVotes,
+           }) => {
+            return (
+             <Grid item key={petUid} xs={12} sm={6} md={4} lg={3}>
+              <RecipeReviewCard
+               petName={petName}
+               added={added}
+               authorName={authorName}
+               authorPhoto={authorPhoto}
+               petDescription={petDescription}
+               petImg={petImg}
+               petSituation={petSituation}
+               petRace={petRace}
+               petCity={petCity}
+               petState={petState}
+               upVote={upVote}
+               upVotes={upVotes}
+               petUid={petUid}
+               dbId={dbId}
+               loading={status}
+              />
+             </Grid>
+            );
+           }
+          )}
    </Grid>
   </div>
  );

@@ -3,7 +3,7 @@
 */
 import { useAuth } from "../../hooks/useAuth";
 
-import firebase from "../../services/firebase";
+import { firebase } from "../../services/firebase";
 
 /*
 - Components
@@ -69,7 +69,7 @@ export default function RecipeReviewCard({
   >
    <CardHeader
     avatar={
-     loading ? (
+     loading === 'loading' ? (
       <Skeleton
        animation="wave"
        variant="circular"
@@ -86,7 +86,7 @@ export default function RecipeReviewCard({
      </IconButton>
     }
     title={
-     loading ? (
+     loading === 'loading' ? (
       <Skeleton
        animation="wave"
        height={10}
@@ -98,7 +98,7 @@ export default function RecipeReviewCard({
      )
     }
     subheader={
-     loading ? (
+     loading === 'loading' ? (
       <Skeleton animation="wave" height={10} width="40%" />
      ) : (
       `${authorName}, ${added}`
@@ -106,7 +106,7 @@ export default function RecipeReviewCard({
     }
    />
    <CardActionArea>
-    {loading ? (
+    {loading === 'loading' ? (
      <Skeleton
       sx={{ height: 190 }}
       animation="wave"
@@ -123,7 +123,7 @@ export default function RecipeReviewCard({
    </CardActionArea>
 
    <CardContent>
-    {loading ? (
+    {loading === 'loading' ? (
      <>
       <Skeleton
        animation="wave"
