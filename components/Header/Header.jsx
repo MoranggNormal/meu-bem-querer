@@ -49,7 +49,7 @@ const Header = (props) => {
  return (
   <>
    <HideOnScroll {...props}>
-    <AppBar position="sticky" elevation={2}>
+    <AppBar position="sticky" elevation={0}>
      <Container maxWidth="xl">
       <Toolbar sx={{ display: "flex" }}>
        <Box
