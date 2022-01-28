@@ -3,7 +3,7 @@
 */
 import { useAuth } from "../../hooks/useAuth";
 
-import { firebase } from "../../services/firebase";
+import { fireStore } from "../../services/firebase";
 
 /*
 - Components
@@ -41,8 +41,7 @@ export default function RecipeReviewCard({
 }) {
  const auth = useAuth();
 
- const db = firebase.firestore();
- const petRef = db.collection("pets");
+ const petRef = fireStore.collection("pets");
 
  const handleUpVote = (upVote, dbId, upVotes) => {
   if (!auth.user) return;
@@ -69,7 +68,7 @@ export default function RecipeReviewCard({
   >
    <CardHeader
     avatar={
-     loading === 'loading' ? (
+     loading === "loading" ? (
       <Skeleton
        animation="wave"
        variant="circular"
@@ -86,7 +85,7 @@ export default function RecipeReviewCard({
      </IconButton>
     }
     title={
-     loading === 'loading' ? (
+     loading === "loading" ? (
       <Skeleton
        animation="wave"
        height={10}
@@ -98,7 +97,7 @@ export default function RecipeReviewCard({
      )
     }
     subheader={
-     loading === 'loading' ? (
+     loading === "loading" ? (
       <Skeleton animation="wave" height={10} width="40%" />
      ) : (
       `${authorName}, ${added}`
@@ -106,7 +105,7 @@ export default function RecipeReviewCard({
     }
    />
    <CardActionArea>
-    {loading === 'loading' ? (
+    {loading === "loading" ? (
      <Skeleton
       sx={{ height: 190 }}
       animation="wave"
@@ -123,7 +122,7 @@ export default function RecipeReviewCard({
    </CardActionArea>
 
    <CardContent>
-    {loading === 'loading' ? (
+    {loading === "loading" ? (
      <>
       <Skeleton
        animation="wave"

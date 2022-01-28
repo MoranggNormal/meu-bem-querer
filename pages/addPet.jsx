@@ -10,7 +10,7 @@ import Link from "next/link";
 /*
 - Libs
 */
-import firebase from "../services/firebase";
+import { fireStore, storage } from "../services/firebase";
 import { uid } from "uid/secure";
 
 /*
@@ -67,9 +67,7 @@ const AddPet = () => {
  const auth = useAuth();
  const router = useRouter();
 
- const db = firebase.firestore();
- const storage = firebase.storage();
- const petRef = db.collection("pets");
+ const petRef = fireStore.collection("pets");
 
  const [imageAsFile, setImageAsFile] = useState("");
  const [progress, setProgress] = useState(0);
