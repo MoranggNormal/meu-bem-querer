@@ -3,10 +3,8 @@ import RecipeReviewCard from "../components/Card/Card";
 import Grid from "@mui/material/Grid";
 import firebase from "../services/firebase";
 
-const db = firebase.firestore();
-const petRef = db.collection("pets");
 
-const Pets = ({ data }) => {
+const Pets = () => {
  const db = firebase.firestore();
  const petRef = db.collection("pets");
 
@@ -30,7 +28,7 @@ const Pets = ({ data }) => {
  return (
   <div>
    <Grid container component="section">
-    {data &&
+    {petData &&
           petData.map(({ dbId, data }) => {
            return (
             <Grid item key={data.petUid} xs={12} sm={6} md={4} lg={3}>
@@ -58,27 +56,5 @@ const Pets = ({ data }) => {
   </div>
  );
 };
-
-let data = [];
-
-export function getStaticProps() {
- try {
-  petRef
-   .where("pending", "==", false)
-   .orderBy("upVote", "desc")
-   .onSnapshot((querySnapshot) => {
-    data = [];
-    querySnapshot.forEach((doc) => {
-     data.push({ dbId: doc.id, data: doc.data() });
-    });
-   });
- } catch (error) {
-  console.log(error);
- } finally {
-  return {
-   props: { data },
-  };
- }
-}
 
 export default Pets;
