@@ -1,6 +1,7 @@
 /*
 - Hooks
 */
+import { useState, useEffect } from "react";
 import { useAuth } from "../../hooks/useAuth";
 
 import { fireStore } from "../../services/firebase";
@@ -34,12 +35,13 @@ export default function RecipeReviewCard({
  petCity,
  petState,
  upVote,
- loading,
  upVotes,
  dbId,
  petUid,
 }) {
  const auth = useAuth();
+
+ const [loading, setLoading] = useState(true);
 
  const petRef = fireStore.collection("pets");
 
@@ -59,16 +61,20 @@ export default function RecipeReviewCard({
   }
  };
 
+ useEffect(() => {
+  setLoading(() => false);
+ }, []);
+
  return (
   <Card
    sx={{
-    margin: "1em",
+    m: 2,
    }}
-   elevation={3}
+   elevation={2}
   >
    <CardHeader
     avatar={
-     loading === "loading" ? (
+     loading ? (
       <Skeleton
        animation="wave"
        variant="circular"
@@ -81,11 +87,11 @@ export default function RecipeReviewCard({
     }
     action={
      <IconButton aria-label="share">
-      <ShareIcon />
+      <ShareIcon sx={{ color: "primary.main" }} />
      </IconButton>
     }
     title={
-     loading === "loading" ? (
+     loading ? (
       <Skeleton
        animation="wave"
        height={10}
@@ -97,7 +103,7 @@ export default function RecipeReviewCard({
      )
     }
     subheader={
-     loading === "loading" ? (
+     loading ? (
       <Skeleton animation="wave" height={10} width="40%" />
      ) : (
       `${authorName}, ${added}`
@@ -105,7 +111,7 @@ export default function RecipeReviewCard({
     }
    />
    <CardActionArea>
-    {loading === "loading" ? (
+    {loading ? (
      <Skeleton
       sx={{ height: 190 }}
       animation="wave"
@@ -122,7 +128,7 @@ export default function RecipeReviewCard({
    </CardActionArea>
 
    <CardContent>
-    {loading === "loading" ? (
+    {loading ? (
      <>
       <Skeleton
        animation="wave"
@@ -141,20 +147,34 @@ export default function RecipeReviewCard({
     <IconButton
      aria-label="Apoie esta causa"
      sx={{ color: "secondary.light", borderRadius: "0.2em" }}
+     disabled={loading ? true : false}
      onClick={() => handleUpVote(upVote, dbId, upVotes)}
     >
-     <FavoriteIcon sx={{ marginRight: "0.3em" }} /> {upVote}
+     <FavoriteIcon sx={{ marginRight: "0.3em" }} />
+     {loading ? (
+      <>
+       <Skeleton animation="wave" height={30} width="1em" />
+      </>
+     ) : (
+      <>{upVote}</>
+     )}
     </IconButton>
 
-    <AlertDialog
-     petName={petName}
-     petImg={petImg}
-     petRace={petRace}
-     petSituation={petSituation}
-     added={added}
-     petDescription={petDescription}
-     petUid={petUid}
-    />
+    {loading ? (
+     <>
+      <Skeleton animation="wave" height={30} width="30%" />
+     </>
+    ) : (
+     <AlertDialog
+      petName={petName}
+      petImg={petImg}
+      petRace={petRace}
+      petSituation={petSituation}
+      added={added}
+      petDescription={petDescription}
+      petUid={petUid}
+     />
+    )}
    </CardActions>
   </Card>
  );
