@@ -4,7 +4,7 @@ import { fireStore } from "../services/firebase";
 import useFirestoreQuery from "../hooks/useFireStoreQuery";
 
 const Pets = () => {
- const { data, status } = useFirestoreQuery(
+ const { data } = useFirestoreQuery(
   fireStore
    .collection("pets")
    .where("pending", "==", false)
@@ -49,7 +49,6 @@ const Pets = () => {
                upVotes={upVotes}
                petUid={petUid}
                dbId={dbId}
-               loading={status}
               />
              </Grid>
             );
