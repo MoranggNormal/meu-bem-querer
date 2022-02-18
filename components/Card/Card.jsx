@@ -1,12 +1,4 @@
 /*
-- Hooks
-*/
-import { useState, useEffect } from "react";
-import { useAuth } from "../../hooks/useAuth";
-
-import { fireStore } from "../../services/firebase";
-
-/*
 - Components
 */
 import Card from "@mui/material/Card";
@@ -38,33 +30,10 @@ export default function RecipeReviewCard({
  upVotes,
  dbId,
  petUid,
+ onUpVote,
+ status,
+ auth,
 }) {
- const auth = useAuth();
-
- const [loading, setLoading] = useState(true);
-
- const petRef = fireStore.collection("pets");
-
- const handleUpVote = (upVote, dbId, upVotes) => {
-  if (!auth.user) return;
-
-  if (upVotes.includes(auth.user.uid)) {
-   petRef.doc(dbId).update({
-    upVote: (upVote -= 1),
-    upVotes: upVotes.filter((e) => e != auth.user.uid),
-   });
-  } else {
-   petRef.doc(dbId).update({
-    upVote: (upVote += 1),
-    upVotes: [...upVotes, auth.user.uid],
-   });
-  }
- };
-
- useEffect(() => {
-  setLoading(() => false);
- }, []);
-
  return (
   <Card
    sx={{
@@ -74,7 +43,7 @@ export default function RecipeReviewCard({
   >
    <CardHeader
     avatar={
-     loading ? (
+     status === "idle" || status === "loading" ? (
       <Skeleton
        animation="wave"
        variant="circular"
@@ -91,7 +60,7 @@ export default function RecipeReviewCard({
      </IconButton>
     }
     title={
-     loading ? (
+     status === "idle" || status === "loading" ? (
       <Skeleton
        animation="wave"
        height={10}
@@ -103,7 +72,7 @@ export default function RecipeReviewCard({
      )
     }
     subheader={
-     loading ? (
+     status === "idle" || status === "loading" ? (
       <Skeleton animation="wave" height={10} width="40%" />
      ) : (
       `${authorName}, ${added}`
@@ -111,7 +80,7 @@ export default function RecipeReviewCard({
     }
    />
    <CardActionArea>
-    {loading ? (
+    {status === "idle" || status === "loading" ? (
      <Skeleton
       sx={{ height: 190 }}
       animation="wave"
@@ -128,7 +97,7 @@ export default function RecipeReviewCard({
    </CardActionArea>
 
    <CardContent>
-    {loading ? (
+    {status === "idle" || status === "loading" ? (
      <>
       <Skeleton
        animation="wave"
@@ -147,11 +116,11 @@ export default function RecipeReviewCard({
     <IconButton
      aria-label="Apoie esta causa"
      sx={{ color: "secondary.light", borderRadius: "0.2em" }}
-     disabled={loading ? true : false}
-     onClick={() => handleUpVote(upVote, dbId, upVotes)}
+     disabled={status === "idle" || status === "loading" ? true : false}
+     onClick={() => onUpVote(auth, upVote, dbId, upVotes)}
     >
      <FavoriteIcon sx={{ marginRight: "0.3em" }} />
-     {loading ? (
+     {status === "idle" || status === "loading" ? (
       <>
        <Skeleton animation="wave" height={30} width="1em" />
       </>
@@ -160,7 +129,7 @@ export default function RecipeReviewCard({
      )}
     </IconButton>
 
-    {loading ? (
+    {status === "idle" || status === "loading" ? (
      <>
       <Skeleton animation="wave" height={30} width="30%" />
      </>

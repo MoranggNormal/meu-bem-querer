@@ -1,10 +1,17 @@
-import RecipeReviewCard from "../components/Card/Card";
-import Grid from "@mui/material/Grid";
-import { fireStore } from "../services/firebase";
+import { useAuth } from "../hooks/useAuth";
 import useFirestoreQuery from "../hooks/useFireStoreQuery";
 
+import { fireStore } from "../services/firebase";
+
+import onUpVote from "../utils/upVote";
+
+import RecipeReviewCard from "../components/Card/Card";
+import Grid from "@mui/material/Grid";
+
 const Pets = () => {
- const { data } = useFirestoreQuery(
+ const auth = useAuth();
+
+ const { data, status } = useFirestoreQuery(
   fireStore
    .collection("pets")
    .where("pending", "==", false)
@@ -49,6 +56,9 @@ const Pets = () => {
                upVotes={upVotes}
                petUid={petUid}
                dbId={dbId}
+               onUpVote={onUpVote}
+               status={status}
+               auth={auth}
               />
              </Grid>
             );
