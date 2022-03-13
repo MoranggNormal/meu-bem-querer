@@ -43,8 +43,9 @@ import LinearProgress, {
 import animal from "../assets/images/abandoned_animal_bill_hinchey.png";
 
 /*
-- Brazil Data (States and Cities)
+- Utils
 */
+import sleep from '../utils/sleep'
 import brazilData from "../utils/brazilData.json";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -98,7 +99,7 @@ const AddPet = () => {
   setImageAsFile(() => image);
  };
 
- const handleSubmit = (event) => {
+ const handleSubmit = async (event) => {
   event.preventDefault();
   const data = new FormData(event.currentTarget);
 
@@ -147,15 +148,11 @@ const AddPet = () => {
        petImg: fireBaseUrl,
       });
      })
-     .then(() =>
-      setTimeout(() => setOpen((prevState) => !prevState), 1500)
-     );
    }
   );
 
-  setTimeout(() => {
-   router.push("/");
-  }, 3500);
+  await sleep(1000 * 5); // awaif five seconds
+    router.push("/");
  };
 
  if (!auth.user) {
