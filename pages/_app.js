@@ -14,29 +14,29 @@ function MyApp({ Component, pageProps, router }) {
  return (
   <ThemeProvider theme={theme}>
    <SnackbarProvider maxSnack={5}>
-   <ProvideAuth>
-    <CssBaseline />
-    <Header />
+    <ProvideAuth>
+     <CssBaseline />
+     <Header />
 
-    <AnimatePresence>
-     <motion.div
-      key={router.route}
-      initial="initial"
-      animate="animate"
-      transition={{ delay: 0.2 }}
-      variants={{
-       initial: {
-        opacity: 0,
-       },
-       animate: {
-        opacity: 1,
-       },
-      }}
-     >
-      <Component {...pageProps} />
-     </motion.div>
-    </AnimatePresence>
-   </ProvideAuth>
+     <AnimatePresence>
+      <motion.div
+       key={router.route}
+       initial="initial"
+       animate="animate"
+       transition={{ delay: 0.2 }}
+       variants={{
+        initial: {
+         opacity: 0,
+        },
+        animate: {
+         opacity: 1,
+        },
+       }}
+      >
+       <Component {...pageProps} />
+      </motion.div>
+     </AnimatePresence>
+    </ProvideAuth>
    </SnackbarProvider>
   </ThemeProvider>
  );

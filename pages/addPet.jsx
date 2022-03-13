@@ -66,27 +66,27 @@ const Input = styled("input")({
 });
 
 const statusMessage = {
-  onSending: 'Aguarde, estamos processando os dados...',
-  onSuccess: 'O pedido foi levado para avaliação, você será redirecionado em alguns segundos...',
-  onNoImage: 'Pedimos que nos envie ao menos uma imagem do pet.'
+ onSending: 'Aguarde, estamos processando os dados...',
+ onSuccess: 'O pedido foi levado para avaliação, você será redirecionado em alguns segundos...',
+ onNoImage: 'Pedimos que nos envie ao menos uma imagem do pet.'
 }
 
 const initialStatus = {
-  status: undefined,
-  message: undefined,
+ status: undefined,
+ message: undefined,
 };
 
 const reducer = (status, action) => {
-  switch (action.type) {
-    case "sending":
-      return { status: "info", message: statusMessage.onSending };
-    case "success":
-      return { status: "success", message: statusMessage.onSuccess };
-    case "noImage":
-      return { status: "error", message: statusMessage.onNoImage };
-    default:
-      throw new Error("invalid Status");
-  }
+ switch (action.type) {
+ case "sending":
+  return { status: "info", message: statusMessage.onSending };
+ case "success":
+  return { status: "success", message: statusMessage.onSuccess };
+ case "noImage":
+  return { status: "error", message: statusMessage.onNoImage };
+ default:
+  throw new Error("invalid Status");
+ }
 };
 
 const AddPet = () => {
@@ -171,7 +171,7 @@ const AddPet = () => {
        upVotes: [],
        petImg: fireBaseUrl,
       }).then(() => {
-        dispatch({ type: "success" });
+       dispatch({ type: "success" });
       });
      })
    }
@@ -183,9 +183,9 @@ const AddPet = () => {
 
 
  useEffect(() => {
-   if(status.status != undefined){
-    enqueueSnackbar(status.message, { variant: status.status });
-   }
+  if(status.status != undefined){
+   enqueueSnackbar(status.message, { variant: status.status });
+  }
  }, [status])
 
  if (!auth.user) {
