@@ -152,7 +152,7 @@ const AddPet = () => {
   );
 
   await sleep(1000 * 5); // awaif five seconds
-    router.push("/");
+  router.push("/");
  };
 
  if (!auth.user) {
