@@ -2,9 +2,9 @@
 - Hooks
 */
 import { useAuth } from "../hooks/useAuth";
-import { useState } from "react";
+import { useState, useReducer, useEffect } from "react";
 import { useRouter } from "next/router";
-
+import { useSnackbar } from 'notistack';
 import Link from "next/link";
 
 /*
@@ -17,7 +17,6 @@ import { uid } from "uid/secure";
 - Components
 */
 import CantPass from "../components/CantContinue/CantContinue";
-import SucessMessage from "../components/Success/Success";
 import { styled } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -48,6 +47,8 @@ import animal from "../assets/images/abandoned_animal_bill_hinchey.png";
 import sleep from '../utils/sleep'
 import brazilData from "../utils/brazilData.json";
 
+const cities = brazilData.estados;
+
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
  height: 35,
  borderRadius: 5,
@@ -64,20 +65,42 @@ const Input = styled("input")({
  display: "none",
 });
 
+const statusMessage = {
+  onSending: 'Aguarde, estamos processando os dados...',
+  onSuccess: 'O pedido foi levado para avaliação, você será redirecionado em alguns segundos...',
+  onNoImage: 'Pedimos que nos envie ao menos uma imagem do pet.'
+}
+
+const initialStatus = {
+  status: undefined,
+  message: undefined,
+};
+
+const reducer = (status, action) => {
+  switch (action.type) {
+    case "sending":
+      return { status: "info", message: statusMessage.onSending };
+    case "success":
+      return { status: "success", message: statusMessage.onSuccess };
+    case "noImage":
+      return { status: "error", message: statusMessage.onNoImage };
+    default:
+      throw new Error("invalid Status");
+  }
+};
+
 const AddPet = () => {
  const auth = useAuth();
  const router = useRouter();
-
- const petRef = fireStore.collection("pets");
-
+ const { enqueueSnackbar } = useSnackbar();
+ const [status, dispatch] = useReducer(reducer, initialStatus);
  const [imageAsFile, setImageAsFile] = useState("");
  const [progress, setProgress] = useState(0);
- const [open, setOpen] = useState(false);
  const [city, setCity] = useState("");
  const [cityArray, setCityArray] = useState([]);
  const [state, setState] = useState("");
-
- const cities = brazilData.estados;
+ 
+ const petRef = fireStore.collection("pets");
 
  const handleState = (event) => {
   if (event.target.value != "") {
@@ -104,9 +127,11 @@ const AddPet = () => {
   const data = new FormData(event.currentTarget);
 
   if (imageAsFile === "") {
-   console.error(`not an image, the image file is a ${typeof imageAsFile}`);
+   dispatch({ type: "noImage" });
    return;
   }
+
+  dispatch({ type: "sending" });
 
   const uploadTask = storage
    .ref(`/images/${imageAsFile.name}`)
@@ -124,7 +149,6 @@ const AddPet = () => {
    },
    () => {
     setProgress(0);
-    setOpen((prevState) => !prevState);
     storage
      .ref("images")
      .child(imageAsFile.name)
@@ -146,6 +170,8 @@ const AddPet = () => {
        upVote: 0,
        upVotes: [],
        petImg: fireBaseUrl,
+      }).then(() => {
+        dispatch({ type: "success" });
       });
      })
    }
@@ -154,6 +180,13 @@ const AddPet = () => {
   await sleep(1000 * 5); // awaif five seconds
   router.push("/");
  };
+
+
+ useEffect(() => {
+   if(status.status != undefined){
+    enqueueSnackbar(status.message, { variant: status.status });
+   }
+ }, [status])
 
  if (!auth.user) {
   return <CantPass />;
@@ -178,7 +211,6 @@ const AddPet = () => {
       backgroundPosition: "center",
      }}
     />
-
     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
      <Box
       sx={{
@@ -353,7 +385,6 @@ const AddPet = () => {
       </Box>
      </Box>
     </Grid>
-    <SucessMessage open={open} />
    </Grid>
       );
   </>
