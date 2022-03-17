@@ -13,9 +13,22 @@ import PetDesc from './SecondStep/Index';
 import PetImage from './ThirdStep/Index';
 import Review from './FinalStep/Index';
 
-import { NewPetFormProvider } from '../../context/newPetFormContext'
+import { useAuth } from '../../hooks/useAuth';
+import useNewPetForm from '../../hooks/useNewPetForm'
+import { fireStore, storage } from "../../services/firebase";
+import { uid } from "uid/secure";
 
-
+const ActionHandler = ({onClick, actionName}) => {
+ return (
+  <Button
+   variant={actionName === 'Voltar' ? 'outlined' : 'contained'}
+   onClick={onClick}
+   sx={{ mt: 3, ml: 1 }}
+  >
+   {actionName}
+  </Button>
+ )
+}
 
 const steps = ['Informações', 'Descrição', 'Foto', 'Confirmar doação'];
 
@@ -34,10 +47,61 @@ function getStepContent(step) {
  }
 }
 
-export default function NewPetForm() {
+function NewPetForm() {
  const [activeStep, setActiveStep] = useState(0);
+ const [, setProgress] = useState(0);
+ const auth = useAuth();
+ const {state} = useNewPetForm();
+ const petRef = fireStore.collection("pets");
 
  const handleNext = () => {
+
+  if(activeStep === steps.length - 1){
+
+   const uploadTask = storage
+    .ref(`/images/${state.petImage.name}`)
+    .put(state.petImage);
+
+   uploadTask.on(
+    "state_changed",
+    (snapShot) => {
+     const progress =
+               (snapShot.bytesTransferred / snapShot.totalBytes) * 100;
+     setProgress(parseInt(progress.toFixed(0)));
+    },
+    (err) => {
+     console.log(err);
+    },
+    () => {
+     setProgress(0);
+     
+     storage
+      .ref("images")
+      .child(state.petImage.name)
+      .getDownloadURL()
+      .then((fireBaseUrl) => {
+       // delete image file before send
+       delete state.petImage;
+       // send to db
+       petRef.doc(uid()).set({
+        authorId: auth.user.uid,
+        authorName: auth.user.displayName,
+        authorPhoto: auth.user.photoURL,
+        petUid: uid(16),
+        added: new Date().toLocaleDateString(),
+        pending: true,
+        upVote: 0,
+        upVotes: [],
+        petImg: fireBaseUrl,
+        ...state
+       }).then(() => {
+        console.log('certo')
+       });
+      })
+    }
+   );
+  }
+
   setActiveStep(activeStep + 1);
  };
 
@@ -70,28 +134,27 @@ export default function NewPetForm() {
       </>
      ) : (
       <>
-       <NewPetFormProvider>
-        {getStepContent(activeStep)}
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-         {activeStep !== 0 && (
-          <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                      Voltar
-          </Button>
-         )}
+       
+       {getStepContent(activeStep)}
+       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        {activeStep !== 0 && (
+         <ActionHandler onClick={handleBack} actionName="Voltar" />
+        )}
 
-         <Button
-          variant="contained"
-          onClick={handleNext}
-          sx={{ mt: 3, ml: 1 }}
-         >
-          {activeStep === steps.length - 1 ? 'Confirmar' : 'Próximo'}
-         </Button>
-        </Box>
-       </NewPetFormProvider>
+        {activeStep === steps.length - 1 ?
+         <ActionHandler onClick={handleNext} actionName="Confirmar" /> :
+         <ActionHandler onClick={handleNext} actionName="Próximo" />}
+
+         
+       </Box>
+       
       </>
      )}
     </>
    </Paper>
   </Container>
+  
  );
 }
+
+export default NewPetForm

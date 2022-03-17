@@ -27,9 +27,6 @@ export default function Review() {
 
  const stateValueAsArray = Object.values(state)
 
-
- console.log(state.petImage)
-
  return (
   <>
    <Typography variant="h6" gutterBottom>

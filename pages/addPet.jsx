@@ -2,9 +2,11 @@
 - Hooks
 */
 import { useAuth } from "../hooks/useAuth";
+
 /*
-- Libs
+- Context
 */
+import { NewPetFormProvider } from '../context/newPetFormContext'
 
 /*
 - Components
@@ -32,7 +34,7 @@ const AddPet = () => {
  }
 
  return (
-  <>
+  <NewPetFormProvider>
    <Grid container component="main" sx={{ height: "90vh", maxHeight: "90vh" }}>
     <Grid
      item
@@ -70,8 +72,8 @@ const AddPet = () => {
      </Box>
     </Grid>
    </Grid>
-  </>
+  </NewPetFormProvider>
  );
 };
 
-export default AddPet;
+export default AddPet
