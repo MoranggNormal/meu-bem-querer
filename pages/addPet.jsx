@@ -49,7 +49,7 @@ const AddPet = () => {
       maxHeight: "100%"
      }}
     />
-    <Grid item xs={12} sm={8} md={7} elevation={6} square sx={{maxHeight: "100%", overflowY: 'scroll'}}>
+    <Grid item xs={12} sm={8} md={7} elevation={6}  sx={{maxHeight: "100%", overflowY: 'scroll'}}>
      <Box
       sx={{
        my: 8,
