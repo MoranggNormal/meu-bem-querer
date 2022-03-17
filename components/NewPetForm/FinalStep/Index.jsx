@@ -30,7 +30,7 @@ export default function Review() {
  return (
   <>
    <Typography variant="h6" gutterBottom>
-        Order summary
+        Revise as informações
    </Typography>
    
    <List disablePadding>

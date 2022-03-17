@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
@@ -18,11 +18,12 @@ import useNewPetForm from '../../hooks/useNewPetForm'
 import { fireStore, storage } from "../../services/firebase";
 import { uid } from "uid/secure";
 
-const ActionHandler = ({onClick, actionName}) => {
+const ActionHandler = ({onClick, actionName, disabled	}) => {
  return (
   <Button
    variant={actionName === 'Voltar' ? 'outlined' : 'contained'}
    onClick={onClick}
+   disabled={disabled}
    sx={{ mt: 3, ml: 1 }}
   >
    {actionName}
@@ -32,27 +33,30 @@ const ActionHandler = ({onClick, actionName}) => {
 
 const steps = ['Informações', 'Descrição', 'Foto', 'Confirmar doação'];
 
-function getStepContent(step) {
- switch (step) {
- case 0:
-  return <PetInfo />;
- case 1:
-  return <PetDesc />;
- case 2:
-  return <PetImage />;
- case 3:
-  return <Review />;
- default:
-  throw new Error('Unknown step');
- }
-}
 
 function NewPetForm() {
  const [activeStep, setActiveStep] = useState(0);
  const [, setProgress] = useState(0);
+ const [disabledButton, setDisabledButton] = useState(false);
  const auth = useAuth();
  const {state} = useNewPetForm();
+ const {petName, petType, petRace, petWeight, petSize, petCity, petState, petGender, petAge, petDescription, petImage} = state
  const petRef = fireStore.collection("pets");
+
+ const getStepContent = (step) => {
+  switch (step) {
+  case 0:
+   return <PetInfo />;
+  case 1:
+   return <PetDesc />;
+  case 2:
+   return <PetImage />;
+  case 3:
+   return <Review />;
+  default:
+   throw new Error('Unknown step');
+  }
+ }
 
  const handleNext = () => {
 
@@ -109,6 +113,41 @@ function NewPetForm() {
   setActiveStep(activeStep - 1);
  };
 
+
+
+ useEffect(() => {
+
+  const verifyValuesByStep = (step) => {
+   if(step === 0){
+    if(petName && petType && petRace && petWeight && petSize && petCity && petState && petGender && petAge){
+     setDisabledButton(() => false)
+    }else{
+     setDisabledButton(() => true)
+    }
+   }
+
+   if(step === 1){
+    if(petDescription)
+    {
+     setDisabledButton(() => false)
+    }else{
+     setDisabledButton(() => true)
+    }
+   }
+
+   if(step === 2){
+    if(petImage)
+    {
+     setDisabledButton(() => false)
+    }else{
+     setDisabledButton(() => true)
+    }
+   }
+  }
+
+  verifyValuesByStep(activeStep)
+ }, [activeStep, petAge, petCity, petDescription, petGender, petImage, petName, petRace, petSize, petState, petType, petWeight])
+
  return (
   <Container component="form"  sx={{ mb: 4 }}>
    <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
@@ -142,8 +181,8 @@ function NewPetForm() {
         )}
 
         {activeStep === steps.length - 1 ?
-         <ActionHandler onClick={handleNext} actionName="Confirmar" /> :
-         <ActionHandler onClick={handleNext} actionName="Próximo" />}
+         <ActionHandler onClick={handleNext} actionName="Confirmar" disabled={disabledButton} /> :
+         <ActionHandler onClick={handleNext} actionName="Próximo" disabled={disabledButton} />}
 
          
        </Box>
