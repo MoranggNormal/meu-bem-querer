@@ -11,6 +11,7 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 
 import WithTransition from '../components/WithTransition/Index'
+import sleep from '../utils/sleep'
 
 
 const Pets = () => {
@@ -22,7 +23,9 @@ const Pets = () => {
   setOnHover(() => key)
  }
   
- const hideInfo = () => setOnHover(() => null)
+ const hideInfo = async () =>{ 
+  await sleep(1000 * 15) // await 15 seconds before hide component 
+  setOnHover(() => null)}
 
  const { data } = useFirestoreQuery(
   fireStore
