@@ -38,7 +38,6 @@ const steps = ['Informações', 'Descrição', 'Foto', 'Confirmar doação'];
 
 function NewPetForm() {
  const [activeStep, setActiveStep] = useState(0);
- const [, setProgress] = useState(0);
  const [disabledButton, setDisabledButton] = useState(false);
  const auth = useAuth();
  const {state} = useNewPetForm();
@@ -70,17 +69,10 @@ function NewPetForm() {
 
    uploadTask.on(
     "state_changed",
-    (snapShot) => {
-     const progress =
-               (snapShot.bytesTransferred / snapShot.totalBytes) * 100;
-     setProgress(parseInt(progress.toFixed(0)));
-    },
     (err) => {
      console.log(err);
     },
-    () => {
-     setProgress(0);
-     
+    () => {     
      storage
       .ref("images")
       .child(state.petImage.name)
