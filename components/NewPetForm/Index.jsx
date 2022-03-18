@@ -8,6 +8,8 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
+import WithTransition from '../WithTransition/Index';
+
 import PetInfo from './FirstStep/Index';
 import PetDesc from './SecondStep/Index';
 import PetImage from './ThirdStep/Index';
@@ -173,8 +175,9 @@ function NewPetForm() {
       </>
      ) : (
       <>
-       
-       {getStepContent(activeStep)}
+       <WithTransition key={activeStep}>
+        {getStepContent(activeStep)}
+       </WithTransition>
        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         {activeStep !== 0 && (
          <ActionHandler onClick={handleBack} actionName="Voltar" />

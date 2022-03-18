@@ -2,7 +2,7 @@ import "../styles/globals.css";
 import { ThemeProvider } from "@mui/material/styles";
 import { ProvideAuth } from "../hooks/useAuth";
 import theme from "../utils/Theme";
-import { motion, AnimatePresence } from "framer-motion";
+import WithTransition from '../components/WithTransition/Index'
 import { SnackbarProvider } from 'notistack';
 
 
@@ -17,25 +17,9 @@ function MyApp({ Component, pageProps, router }) {
     <ProvideAuth>
      <CssBaseline />
      <Header />
-
-     <AnimatePresence>
-      <motion.div
-       key={router.route}
-       initial="initial"
-       animate="animate"
-       transition={{ delay: 0.2 }}
-       variants={{
-        initial: {
-         opacity: 0,
-        },
-        animate: {
-         opacity: 1,
-        },
-       }}
-      >
-       <Component {...pageProps} />
-      </motion.div>
-     </AnimatePresence>
+     <WithTransition key={router.route}>
+      <Component {...pageProps} />
+     </WithTransition>
     </ProvideAuth>
    </SnackbarProvider>
   </ThemeProvider>
