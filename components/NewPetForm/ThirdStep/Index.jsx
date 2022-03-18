@@ -7,7 +7,7 @@ import CardMedia from '@mui/material/CardMedia';
 import { styled } from "@mui/material/styles";
 
 import useNewPetForm from '../../../hooks/useNewPetForm'
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 
 
 const Input = styled("input")({
@@ -16,7 +16,7 @@ const Input = styled("input")({
 
 export default function PetImage() {
 
- const { handleChange } = useNewPetForm()
+ const { handleChange, state } = useNewPetForm()
 
 
  const [imageAsLink, setImageAsLink] = useState("");
@@ -24,11 +24,16 @@ export default function PetImage() {
 
  const handleImageAsFile = (e) => {
   const image = e.target.files[0];
-  const _imageAsLink = URL.createObjectURL(image)
-  setImageAsLink(() => _imageAsLink);
-
   handleChange('petImage', image)
  };
+
+ useEffect(() => {
+  if(state.petImage){
+   const {petImage} = state
+   const _imageAsLink = URL.createObjectURL(petImage)
+   setImageAsLink(() => _imageAsLink);
+  }
+ }, [state])
 
  return (
   <>
@@ -68,7 +73,6 @@ export default function PetImage() {
      <Card>
       <CardMedia
        component="img"
-       height="200"
        image={imageAsLink}
        alt="green iguana"
       />
