@@ -1,17 +1,17 @@
-import { useAuth } from "../hooks/useAuth";
+/* eslint-disable @next/next/no-img-element */
 import useFirestoreQuery from "../hooks/useFireStoreQuery";
 
 import { fireStore } from "../services/firebase";
 
-import onUpVote from "../utils/upVote";
-
-import RecipeReviewCard from "../components/Card/Card";
 import Grid from "@mui/material/Grid";
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+import IconButton from '@mui/material/IconButton';
 
 const Pets = () => {
- const auth = useAuth();
 
- const { data, status } = useFirestoreQuery(
+ const { data } = useFirestoreQuery(
   fireStore
    .collection("pets")
    .where("pending", "==", false)
@@ -20,50 +20,33 @@ const Pets = () => {
 
  return (
   <div>
-   <Grid container component="section">
-    {data &&
-          data.map(
-           ({
-            dbId,
-            petUid,
-            petName,
-            added,
-            authorName,
-            authorPhoto,
-            petDescription,
-            petImg,
-            petSituation,
-            petRace,
-            petCity,
-            petState,
-            upVote,
-            upVotes,
-           }) => {
-            return (
-             <Grid item key={petUid} xs={12} sm={6} md={4} lg={3}>
-              <RecipeReviewCard
-               petName={petName}
-               added={added}
-               authorName={authorName}
-               authorPhoto={authorPhoto}
-               petDescription={petDescription}
-               petImg={petImg}
-               petSituation={petSituation}
-               petRace={petRace}
-               petCity={petCity}
-               petState={petState}
-               upVote={upVote}
-               upVotes={upVotes}
-               petUid={petUid}
-               dbId={dbId}
-               onUpVote={onUpVote}
-               status={status}
-               auth={auth}
-              />
-             </Grid>
-            );
-           }
-          )}
+   <Grid container component="main">
+
+    <ImageList variant="masonry" cols={3} gap={2}>
+     {data && data.map((item) => (
+      <ImageListItem key={item.petImg}>
+       <img
+        src={`${item.petImg}?w=161&fit=crop&auto=format`}
+        srcSet={`${item.petImg}?w=161&fit=crop&auto=format&dpr=2 2x`}
+        alt={item.title}
+        loading="lazy"
+       />
+       <ImageListItemBar
+        title={item.petName}
+        subtitle={`${item.petCity},${item.petState}`}
+        actionIcon={
+         <IconButton
+          sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+          aria-label={`${item.petName} tem um total de ${item.upVote} apoios.`}
+         >
+          {item.upVote}
+         </IconButton>
+        }
+       />
+      </ImageListItem>
+     ))}
+    </ImageList>
+
    </Grid>
   </div>
  );
