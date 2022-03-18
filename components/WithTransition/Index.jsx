@@ -1,10 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion";
 
-const WithTransition = ({children, key}) => {
+const WithTransition = ({children}) => {
  return(
   <AnimatePresence>
    <motion.div
-    key={key}
     initial="initial"
     animate="animate"
     transition={{ delay: 0.2 }}

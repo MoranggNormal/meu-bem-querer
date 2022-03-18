@@ -10,14 +10,14 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 import Header from "../components/Header/Header";
 
-function MyApp({ Component, pageProps, router }) {
+function MyApp({ Component, pageProps }) {
  return (
   <ThemeProvider theme={theme}>
    <SnackbarProvider maxSnack={5}>
     <ProvideAuth>
      <CssBaseline />
      <Header />
-     <WithTransition key={router.route}>
+     <WithTransition>
       <Component {...pageProps} />
      </WithTransition>
     </ProvideAuth>
