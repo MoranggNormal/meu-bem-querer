@@ -1,4 +1,4 @@
-import Head from "next/head";
+import { NextSeo } from 'next-seo';
 
 import Box from "@mui/material/Box";
 import { Carousel } from "react-responsive-carousel";
@@ -14,11 +14,10 @@ const links = [
 export default function Home() {
  return (
   <>
-   <Head>
-    <title>Meu bem-querer | Página Inicial</title>
-    <meta name="description" content="Meu bem-querer" />
-    <link rel="icon" href="/favicon.ico" />
-   </Head>
+   <NextSeo
+    title="Página Inicial"
+    description="Doe e adote mascotes, um projeto desenvolvido pensando no próximo."
+   />
 
    <Carousel
     autoPlay={true}

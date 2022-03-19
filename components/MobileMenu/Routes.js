@@ -9,8 +9,8 @@ import EmailIcon from '@mui/icons-material/Email';
 
 const firstRoutes = [
  {route: 'Início', href: '/', icon: <HomeIcon /> },
- {route: 'Fazer uma doação', href: '/addPet', icon: <AddReactionIcon /> },
- {route: 'Adotar um Pet', href: '/pets', icon: <FavoriteIcon /> },
+ {route: 'Fazer uma doacao', href: '/doacao', icon: <AddReactionIcon /> },
+ {route: 'Adotar um Pet', href: '/pets-para-adocao', icon: <FavoriteIcon /> },
  {route: 'Como doar', href: '/', icon: <InfoIcon /> },
 ]
 

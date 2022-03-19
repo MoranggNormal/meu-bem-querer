@@ -25,9 +25,9 @@ import AccountMenu from "../AccountMenu/AccountMenu";
 */
 const pages = [
  { route: "Início", href: "/" },
- { route: "Fazer uma doação", href: "/addPet" },
- { route: "Adotar um pet", href: "/pets" },
- { route: "Como doar", href: "/pets" },
+ { route: "Fazer uma doacao", href: "/doacao" },
+ { route: "Adotar um pet", href: "/pets-para-adocao" },
+ { route: "Como doar", href: "/pets-para-adocao" },
 ];
 
 const Header = (props) => {
