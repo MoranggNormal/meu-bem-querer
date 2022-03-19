@@ -9,6 +9,8 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
+import LinearProgress from '@mui/material/LinearProgress';
+
 
 import WithTransition from '../components/WithTransition/Index'
 
@@ -23,15 +25,20 @@ const Pets = () => {
   setOnHover(() => key)
  }
   
- const { data } = useFirestoreQuery(
+ const { data, status } = useFirestoreQuery(
   fireStore
    .collection("pets")
    .where("pending", "==", false)
    .orderBy("upVote", "desc")
  );
 
+
  return (
   <Grid container component="main">
+
+   {status === 'loading' && <Grid item sx={{ width: '100%' }}>
+    <LinearProgress />
+   </Grid>}
 
    {data && <ImageList variant="masonry" cols={3} gap={0}>
     {data.map(({petImg, petName, petCity, petState, upVote}, index) => (
