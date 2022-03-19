@@ -11,22 +11,18 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 
 import WithTransition from '../components/WithTransition/Index'
-import sleep from '../utils/sleep'
+
+import upperFirstLetter from '../utils/upperFirstLetter'
 
 
 const Pets = () => {
 
  const [onHover, setOnHover] = useState(null);
 
-
  const showInfo = (key) => {
   setOnHover(() => key)
  }
   
- const hideInfo = async () =>{ 
-  await sleep(1000 * 15) // await 15 seconds before hide component 
-  setOnHover(() => null)}
-
  const { data } = useFirestoreQuery(
   fireStore
    .collection("pets")
@@ -37,25 +33,25 @@ const Pets = () => {
  return (
   <Grid container component="main">
 
-   {data && <ImageList variant="masonry" cols={4} gap={0}>
-    {data.map((item, index) => (
-     <ImageListItem key={item.petImg} onMouseOver={() => showInfo(index)} onMouseOut={hideInfo}>
+   {data && <ImageList variant="masonry" cols={3} gap={0}>
+    {data.map(({petImg, petName, petCity, petState, upVote}, index) => (
+     <ImageListItem key={petImg} onMouseOver={() => showInfo(index)} >
       <img
-       src={`${item.petImg}?w=121&fit=crop&auto=format`}
-       srcSet={`${item.petImg}?w=121&fit=crop&auto=format&dpr=2 2x`}
-       alt={item.title}
+       src={`${petImg}?w=121&fit=crop&auto=format`}
+       srcSet={`${petImg}?w=121&fit=crop&auto=format&dpr=2 2x`}
+       alt={upperFirstLetter(petName)}
        loading="lazy"
       />
 
       {onHover === index && <WithTransition><ImageListItemBar
-       title={item.petName}
-       subtitle={`${item.petCity},${item.petState}`}
+       title={upperFirstLetter(petName)}
+       subtitle={`${upperFirstLetter(petCity)}, ${upperFirstLetter(petState)}`}
        actionIcon={
         <IconButton
          sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-         aria-label={`${item.petName} tem um total de ${item.upVote} apoios.`}
+         aria-label={`${upperFirstLetter(petName)} tem um total de ${upVote} apoios.`}
         >
-         {item.upVote}
+         {upVote}
         </IconButton>
        }
       /></WithTransition>}
