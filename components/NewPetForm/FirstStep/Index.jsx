@@ -1,4 +1,8 @@
+import {useState, useEffect} from 'react';
 import useNewPetForm from '../../../hooks/useNewPetForm'
+
+
+import {getData} from '../../../services/statesAndCities'
 
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -9,11 +13,54 @@ import Checkbox from '@mui/material/Checkbox';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import InputAdornment from '@mui/material/InputAdornment';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 
 export default function PetInfo() {
 
  const { handleChange, state } = useNewPetForm()
+
+ const [states, setStates] = useState(null);
+ const [cities, setCities] = useState(null)
+
+ // Get Brazil States when mounted.
+ useEffect(() => {
+  const getStates = async () => {
+   const data = await getData('/states')
+  
+   setStates(() => data)
+  }
+    
+  getStates()
+  
+ }, [])
+  
+ // Get cities based on selected state
+ useEffect(() => {
+  const getCities = async () => {
+   const data = await getData(`/city-by-state/${state.petState}`)
+  
+   // Split into multiple arrays.
+   function splitArrayIntoChunksOfLen(arr, len) {
+    const chunks = [], i = 0, n = arr.length;
+    while (i < n) {
+     chunks.push(arr.slice(i, i += len));
+    }
+    return chunks;
+   }
+  
+   const splitedData = splitArrayIntoChunksOfLen(data[0], 1);
+  
+   setCities(() => splitedData)
+  }
+  
+  if(state.petState){
+   getCities()
+  }
+  
+ }, [state.petState])
 
  return (
   <Grid container spacing={3}>
@@ -95,29 +142,48 @@ export default function PetInfo() {
    </Grid>
 
    <Grid item xs={6}>
-    <TextField
-     id="petCity"
-     name="petCity"
-     label="Cidade"
-     variant="standard"
-     value={state.petCity}
-     required
-     fullWidth
-     onChange={(e) => handleChange(e.target.name, e.target.value)}
-    />
+    <FormControl fullWidth required variant="standard">
+     <InputLabel id="states">Estado</InputLabel>
+     <Select
+      labelId="states"
+      id="statesInput"
+      name="petState"
+      value={state.petState}
+      onChange={(e) => handleChange(e.target.name, e.target.value)}
+      fullWidth
+      label="Estado"
+     >
+      <MenuItem value="">
+       <em>Limpar</em>
+      </MenuItem>
+      {states && states.map(({sigla, nome}) => (
+       <MenuItem key={sigla} value={sigla}>{nome}</MenuItem>
+      ))}
+     </Select>
+    </FormControl>
    </Grid>
 
    <Grid item xs={6}>
-    <TextField
-     id="petState"
-     name="petState"
-     label="Estado"
-     variant="standard"
-     value={state.petState}
-     required
-     fullWidth
-     onChange={(e) => handleChange(e.target.name, e.target.value)}
-    />
+    <FormControl fullWidth required variant="standard">
+     <InputLabel id="cities">Cidade</InputLabel>
+     <Select
+      labelId="cities"
+      id="citiesInput"
+      name="petCity"
+      onChange={(e) => handleChange(e.target.name, e.target.value)}
+      value={state.petCity}
+      label="Cidade"
+      disabled={!state.petState}
+     >
+      <MenuItem value="">
+       <em>Limpar</em>
+      </MenuItem>
+      {cities && cities.map((item) => (
+       <MenuItem key={item.toString()} value={item.toString()}>{item.toString()}</MenuItem>
+      ))}
+     </Select>
+    </FormControl>
+
    </Grid>
 
    <Grid item xs={12} md={6}>
