@@ -4,6 +4,7 @@ const WithTransition = ({children}) => {
  return(
   <AnimatePresence>
    <motion.div
+    style={{width: '100%'}}
     initial="initial"
     animate="animate"
     transition={{ delay: 0.2 }}

@@ -32,8 +32,23 @@ const formReducer = (state, action) => {
   return { current: "initial" };
  case "localization":
   return { current: "localization" };
+ case "gender":
+  return { current: 'gender'}
  default:
-  throw new Error("forgotten action");
+  return { current: "initial"};
+ }
+}
+
+const showCurrentText = (ref) => {
+ switch (ref) {
+ case 'initial':
+  return 'Para prosseguir, selecione um filtro...'
+ case 'localization':
+  return 'Filtrando por localização...'      
+ case 'gender':
+  return 'Filtrando por gênero...'          
+ default:
+  break;
  }
 }
 
@@ -42,6 +57,7 @@ const Pets = () => {
  const [onHover, setOnHover] = useState(null);
  const [selectedState, setSelectedState] = useState('');
  const [selectedCity, setSelectedCity] = useState('');
+ const [selectedForm, setSelectedForm] = useState('');
  const [stateAcronym, setStateAcronym] = useState('');
  const [forceUpdate, setForceUpdate] = useState(false)
  const [states, setStates] = useState('');
@@ -105,28 +121,40 @@ const Pets = () => {
  return (
   <Grid container component="main">
 
-   {status === 'loading' && <Grid item sx={{ width: '100%' }}>
-    <LinearProgress />
-   </Grid>}
+   {status === 'loading' && 
+   <WithTransition>
+    <Grid item sx={{ width: '100%' }}>
+     <LinearProgress />
+    </Grid>
+   </WithTransition>}
 
-   <Grid item xs={12} sx={{mx: 2, mt: 4, mb: 2}}>
+   <Grid item xs={12} sx={{mx: 2, mt: 4, mb: 2, opacity: activeForm.current != 'initial' && 0}}>
     <Typography component="h1" variant="h5" fontWeight={700}>
         ADOÇÃO
     </Typography>
    </Grid>
 
-   <Grid item xs={4} sx={{mx: 2}}>
+   <Grid item xs={4} sx={{mx: 2, opacity: activeForm.current != 'initial' && 0}}>
     <Divider />
    </Grid>
 
+   {activeForm.current != 'initial' && 
+    <Grid item xs={12} sx={{mx: 2, mt: 4, mb: 2, position: 'absolute'}}>
+     <WithTransition >
+      <Button onClick={() => dispatch({type: 'initial'})} variant="contained" sx={{height: '100%'}}>Voltar</Button>
+     </WithTransition>
+    </Grid>
+   }
+
    <Grid item xs={12} sx={{mt: 10}}>
-    <Typography component="h2" variant="h4" align="center">
-            Para prosseguir...
+    <Typography component="h2" variant="h5" align="center">
+     {showCurrentText(activeForm.current)}
     </Typography>
    </Grid>
 
    {activeForm.current === 'initial' &&
- <Grid container sx={{mt: 5, mb: 10}} spacing={2} justifyContent="center">
+<WithTransition>
+ <Grid container sx={{mt: 5, mb: 10}} spacing={1} justifyContent="center">
   <Grid item>
    <FormControl sx={{ minWidth: 300}}>
     <InputLabel id="demo-simple-select-label">Escolha entre:</InputLabel>
@@ -134,75 +162,113 @@ const Pets = () => {
      labelId="demo-simple-select-label"
      id="demo-simple-select"
      label="Escolha entre..."
-     value={10}
+     value={selectedForm}
+     onChange={(e) => setSelectedForm(e.target.value)}
     >
-     <MenuItem value={10}>Ten</MenuItem>
-     <MenuItem value={20}>Twenty</MenuItem>
-     <MenuItem value={30}>Thirty</MenuItem>
+     <MenuItem value={'localization'}>Localização</MenuItem>
+     <MenuItem value={'gender'}>Gênero</MenuItem>
     </Select>
    </FormControl>
   </Grid>
     
   <Grid item>
-   <Button onClick={() => dispatch({type: "localization"})} variant="contained" sx={{height: '100%'}}>Confirmar</Button>
+   <Button onClick={() => dispatch({type: selectedForm})} variant="contained" sx={{height: '100%'}}>Avançar</Button>
   </Grid>
- </Grid> }
+ </Grid>
+</WithTransition>
+   }
    
 
    {activeForm.current === "localization" && states &&
-   <Grid container spacing={0.5} justifyContent="center" sx={{mb: 25}}>
+   <WithTransition>
+    <Grid container spacing={1} justifyContent="center" sx={{mt: 5, mb: 10}}> 
 
-    <Grid item xs={10} sm={4} md={3} lg={4}>
-     <Autocomplete
-      inputValue={selectedState}
-      onInputChange={(event, newInputValue) => {
+     <Grid item xs={10} sm={4} md={3} lg={4}>
+      <Autocomplete
+       inputValue={selectedState}
+       onInputChange={(event, newInputValue) => {
        // Clear cities before update.
-       setCities([])
-       setSelectedCity('')
-       setForceUpdate(prevState => !prevState)
-       // Update.
-       setSelectedState(newInputValue);
-      }}
-      disablePortal
-      id="states"
-      options={states}
-      renderInput={(params) =><TextField
-       {...params}
-       label="Busque por um estado"
-       InputProps={{
-        ...params.InputProps,
+        setCities([])
+        setSelectedCity('')
+        setForceUpdate(prevState => !prevState)
+        // Update.
+        setSelectedState(newInputValue);
        }}
-      />}
-     /> 
-    </Grid>
+       disablePortal
+       id="states"
+       options={states}
+       renderInput={(params) =><TextField
+        {...params}
+        label="Busque por um estado"
+        InputProps={{
+         ...params.InputProps,
+        }}
+       />}
+      /> 
+     </Grid>
 
-    <Grid item xs={10} sm={5} md={4} lg={5}>
-     <Autocomplete
-      key={forceUpdate}
-      inputValue={selectedCity}
-      onInputChange={(event, newInputValue) => {
-       setSelectedCity(newInputValue)      
-      }}
-      disablePortal
-      id="cities"
-      options={cities}
-      isOptionEqualToValue={(option, value) => option !== value}
-      disabled={!selectedState}
-      renderInput={(params) =><TextField
-       {...params}
-       label="Selecione uma cidade"
-      />}
-     /> 
-    </Grid>
+     <Grid item xs={10} sm={5} md={4} lg={5}>
+      <Autocomplete
+       key={forceUpdate}
+       inputValue={selectedCity}
+       onInputChange={(event, newInputValue) => {
+        setSelectedCity(newInputValue)      
+       }}
+       disablePortal
+       id="cities"
+       options={cities}
+       isOptionEqualToValue={(option, value) => option !== value}
+       disabled={!selectedState}
+       renderInput={(params) =><TextField
+        {...params}
+        label="Selecione uma cidade"
+       />}
+      /> 
+     </Grid>
     
-    <Grid item xs={3} sm={2} lg={1}>
-     <Button variant="contained" sx={{height: '100%'}}>Confirmar</Button>
+     <Grid item xs={12} sm={2} lg={1} sx={{justifyContent: {xs: "center", md: "left"}, display: 'flex'}}>
+      <Button variant="contained" sx={{height: '100%'}}>Confirmar</Button>
+     </Grid>
     </Grid>
-
-   </Grid>
+   </WithTransition>
    }
 
-   <Grid item xs={12} sx={{mx: 3}}>
+   {activeForm.current === "gender" && states &&
+   <WithTransition>
+    <Grid container spacing={1} justifyContent="center" sx={{mt: 5, mb: 10}}> 
+
+     <Grid item xs={10} sm={4} md={3} lg={4}>
+      <Autocomplete
+       inputValue={selectedState}
+       onInputChange={(event, newInputValue) => {
+       // Clear cities before update.
+        setCities([])
+        setSelectedCity('')
+        setForceUpdate(prevState => !prevState)
+        // Update.
+        setSelectedState(newInputValue);
+       }}
+       disablePortal
+       id="states"
+       options={states}
+       renderInput={(params) =><TextField
+        {...params}
+        label="Busque por um estado"
+        InputProps={{
+         ...params.InputProps,
+        }}
+       />}
+      /> 
+     </Grid>
+    
+     <Grid item xs={12} sm={2} lg={1} sx={{justifyContent: {xs: "center", md: "left"}, display: 'flex'}}>
+      <Button variant="contained" sx={{height: '100%'}}>Confirmar</Button>
+     </Grid>
+    </Grid>
+   </WithTransition>
+   }
+
+   <Grid item xs={12} sx={{mx: 3, mt: '45vh'}}>
     <Divider />
    </Grid>
 
